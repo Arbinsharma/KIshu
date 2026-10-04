@@ -3,72 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070b14">
-<meta name="description" content="System Update v2.1.4 — required component update for Android devices.">
+<meta name="theme-color" content="#060a12">
 <title>System Update · v2.1.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #060a12;
-    --bg2: #0a1120;
-    --card: #0f1830;
-    --card2: #131e3a;
-    --line: #1c2947;
-    --line2: #24334f;
-    --txt: #eaf1ff;
-    --muted: #8b9bb8;
-    --muted2: #5f6f8d;
-    --blue: #3b82f6;
-    --blue2: #2563eb;
-    --cyan: #22d3ee;
-    --green: #22c55e;
-    --amber: #f59e0b;
-    --purple: #8b5cf6;
-    --radius: 20px;
-    --radius-sm: 12px;
+    --bg: #060a12; --bg2: #0a1120; --card: #0f1830; --card2: #131e3a;
+    --line: #1c2947; --line2: #24334f;
+    --txt: #eaf1ff; --muted: #8b9bb8; --muted2: #5f6f8d;
+    --blue: #3b82f6; --cyan: #22d3ee; --green: #22c55e;
+    --amber: #f59e0b; --purple: #8b5cf6; --red: #ef4444;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--txt);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    line-height: 1.5;
+    background: var(--bg); color: var(--txt); min-height: 100vh;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden; line-height: 1.5;
+    transition: background .3s, color .3s;
   }
-
-  /* ===================== BACKGROUND ===================== */
-  .bg-fx {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
+  body.light {
+    --bg: #f4f7fc; --bg2: #eaf0f9; --card: #ffffff; --card2: #f7faff;
+    --line: #dbe3f0; --line2: #cdd8ea; --txt: #0b1220;
+    --muted: #5a6782; --muted2: #8a97b0;
   }
+  .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .bg-fx::before {
-    content: "";
-    position: absolute;
-    inset: -30%;
+    content: ""; position: absolute; inset: -30%;
     background:
       radial-gradient(circle at 15% 20%, rgba(59,130,246,.22), transparent 42%),
       radial-gradient(circle at 85% 75%, rgba(34,211,238,.16), transparent 42%),
       radial-gradient(circle at 55% 45%, rgba(139,92,246,.10), transparent 55%);
     animation: drift 22s ease-in-out infinite alternate;
   }
-  @keyframes drift {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-4%, -5%) scale(1.1); }
-  }
+  @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(-4%,-5%) scale(1.1); } }
   .bg-fx::after {
-    content: "";
-    position: absolute;
-    inset: 0;
+    content: ""; position: absolute; inset: 0;
     background-image:
       linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
@@ -76,474 +48,378 @@
     mask-image: radial-gradient(circle at 50% 40%, #000 20%, transparent 75%);
     -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 20%, transparent 75%);
   }
-
-  /* Floating orbs */
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(70px);
-    opacity: .35;
-    z-index: 0;
-    pointer-events: none;
-  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(70px); opacity: .35; z-index: 0; pointer-events: none; }
   .orb.a { width: 340px; height: 340px; background: #2563eb; top: -80px; left: -80px; animation: float 14s ease-in-out infinite; }
   .orb.b { width: 280px; height: 280px; background: #06b6d4; bottom: -60px; right: -60px; animation: float 18s ease-in-out infinite reverse; }
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0); }
-    50%      { transform: translate(30px, -30px); }
-  }
+  @keyframes float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,-30px); } }
 
-  /* ===================== LAYOUT ===================== */
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
-  }
+  .wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 24px; }
 
-  /* Top nav */
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 4px 26px;
-    animation: fadeDown .5s ease both;
-  }
-  .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    letter-spacing: -.3px;
-    font-size: 15px;
-  }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px 26px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.3px; font-size: 15px; }
   .nav-brand .mark {
-    width: 30px; height: 30px;
-    border-radius: 9px;
+    width: 30px; height: 30px; border-radius: 9px;
     background: linear-gradient(140deg, #3b82f6, #06b6d4);
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     box-shadow: 0 6px 18px -6px rgba(59,130,246,.75);
   }
   .nav-brand .mark svg { width: 17px; height: 17px; }
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    font-size: 13.5px;
-    color: var(--muted);
-  }
-  .nav-right a { color: var(--muted); text-decoration: none; transition: color .15s; }
+  .nav-right { display: flex; align-items: center; gap: 18px; font-size: 13.5px; color: var(--muted); }
+  .nav-right a { color: var(--muted); text-decoration: none; }
   .nav-right a:hover { color: var(--txt); }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--line);
+    color: var(--muted); cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .icon-btn:hover { color: var(--txt); background: rgba(255,255,255,.07); }
+  .icon-btn svg { width: 15px; height: 15px; }
   .nav-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #6ee7b7;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: #6ee7b7;
     background: rgba(34,197,94,.09);
     border: 1px solid rgba(34,197,94,.25);
-    padding: 5px 11px;
-    border-radius: 100px;
+    padding: 6px 12px; border-radius: 100px;
   }
-  .nav-status .dot {
-    width: 6px; height: 6px;
-    background: #22c55e;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #22c55e;
-    animation: blink 1.6s ease-in-out infinite;
-  }
+  .nav-status .dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: blink 1.6s ease-in-out infinite; }
   @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
 
-  /* Hero grid */
-  .hero {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 56px;
-    align-items: start;
-    padding: 22px 0 60px;
-  }
-
-  /* ===================== LEFT PANEL ===================== */
-  .hero-left {
-    animation: fadeUp .7s ease both;
-  }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; padding: 22px 0 60px; }
+  .hero-left { animation: fadeUp .7s ease both; }
   .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(245,158,11,.1);
-    border: 1px solid rgba(245,158,11,.28);
-    color: #fbbf24;
-    padding: 6px 13px;
-    border-radius: 100px;
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: .7px;
-    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.28);
+    color: #fbbf24; padding: 6px 13px; border-radius: 100px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase;
     margin-bottom: 22px;
   }
-  .eyebrow .dot {
-    width: 7px; height: 7px;
-    background: #f59e0b;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #f59e0b;
-    animation: blink 1.6s ease-in-out infinite;
-  }
-
-  .hero-title {
-    font-size: clamp(34px, 5vw, 54px);
-    font-weight: 900;
-    letter-spacing: -1.6px;
-    line-height: 1.05;
-    margin-bottom: 20px;
-  }
+  .eyebrow .dot { width: 7px; height: 7px; background: #f59e0b; border-radius: 50%; box-shadow: 0 0 10px #f59e0b; animation: blink 1.6s ease-in-out infinite; }
+  .hero-title { font-size: clamp(34px, 5vw, 54px); font-weight: 900; letter-spacing: -1.6px; line-height: 1.05; margin-bottom: 20px; }
   .hero-title .grad {
     background: linear-gradient(120deg, #60a5fa 0%, #22d3ee 60%, #8b5cf6 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
+    -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 20px rgba(34,211,238,.25));
   }
-  .hero-sub {
-    font-size: 17px;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 520px;
-    margin-bottom: 32px;
-  }
+  .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.6; max-width: 520px; margin-bottom: 32px; }
+  .type-cursor { display: inline-block; width: 2px; height: 1em; background: var(--cyan); margin-left: 3px; animation: cursor 1s steps(2) infinite; vertical-align: text-bottom; }
+  @keyframes cursor { 50% { opacity: 0; } }
 
-  /* Feature list */
-  .features {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 32px;
-    max-width: 560px;
-  }
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; max-width: 560px; }
   .feat {
-    display: flex;
-    align-items: flex-start;
-    gap: 11px;
+    display: flex; align-items: flex-start; gap: 11px;
     padding: 13px 14px;
-    background: rgba(255,255,255,.022);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    transition: background .2s, border-color .2s, transform .2s;
+    background: linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.012));
+    border: 1px solid var(--line); border-radius: 14px;
+    transition: transform .25s cubic-bezier(.2,.7,.3,1), border-color .2s, box-shadow .25s;
   }
-  .feat:hover {
-    background: rgba(59,130,246,.05);
-    border-color: rgba(59,130,246,.28);
-    transform: translateY(-1px);
-  }
+  .feat:hover { transform: translateY(-3px); border-color: rgba(59,130,246,.35); box-shadow: 0 20px 40px -20px rgba(59,130,246,.5); }
   .feat-ico {
-    flex-shrink: 0;
-    width: 32px; height: 32px;
-    border-radius: 9px;
-    background: linear-gradient(135deg, rgba(59,130,246,.16), rgba(34,211,238,.10));
-    border: 1px solid rgba(59,130,246,.2);
-    display: grid;
-    place-items: center;
-    color: #93c5fd;
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(135deg, rgba(59,130,246,.22), rgba(34,211,238,.14));
+    border: 1px solid rgba(59,130,246,.28);
+    display: grid; place-items: center; color: #93c5fd;
   }
   .feat-ico svg { width: 16px; height: 16px; }
-  .feat-text { min-width: 0; }
   .feat-text b { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
   .feat-text span { font-size: 12px; color: var(--muted); line-height: 1.4; }
 
-  /* Stats row */
-  .stats {
-    display: flex;
-    gap: 30px;
-    padding-top: 22px;
-    border-top: 1px solid var(--line);
-    max-width: 520px;
+  .stats { display: flex; gap: 30px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 520px; }
+  .stat b {
+    display: block; font-size: 22px; font-weight: 800; letter-spacing: -.5px;
+    background: linear-gradient(120deg, #eaf1ff, #8b9bb8);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
-  .stat b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
   .stat span { font-size: 12px; color: var(--muted); letter-spacing: .2px; }
 
-  /* ===================== INSTALL CARD ===================== */
+  .live-ticker {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 18px; padding: 11px 14px;
+    background: rgba(34,197,94,.06);
+    border: 1px solid rgba(34,197,94,.2);
+    border-radius: 12px;
+    font-size: 12.5px; color: #86efac;
+    max-width: 520px;
+  }
+  .live-ticker .pulse { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 12px #22c55e; animation: blink 1.2s ease-in-out infinite; }
+  .live-ticker b { color: #d1fae5; font-weight: 700; }
+
   .install-card {
-    position: sticky;
-    top: 24px;
+    position: sticky; top: 24px;
     background: linear-gradient(180deg, #131d33 0%, #0c1424 100%);
-    border: 1px solid var(--line);
-    border-radius: 24px;
+    border: 1px solid var(--line); border-radius: 24px;
     padding: 32px 28px 24px;
     box-shadow:
       0 1px 0 rgba(255,255,255,.045) inset,
       0 40px 90px -30px rgba(0,0,0,.9),
-      0 0 0 1px rgba(59,130,246,.06);
+      0 30px 60px -30px rgba(59,130,246,.35);
     animation: fadeUp .8s ease both .1s;
+    transition: transform .4s cubic-bezier(.2,.7,.3,1);
   }
+  body.light .install-card { background: linear-gradient(180deg, #fff, #f4f8ff); }
+  .install-card.tilt { transform: rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); }
 
-  .card-head {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 22px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--line);
-  }
+  .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
   .app-icon {
-    width: 58px; height: 58px;
-    border-radius: 16px;
+    width: 58px; height: 58px; border-radius: 16px;
     background: linear-gradient(140deg, #3b82f6 0%, #06b6d4 100%);
-    display: grid;
-    place-items: center;
-    box-shadow:
-      0 10px 26px -8px rgba(59,130,246,.75),
-      0 1px 0 rgba(255,255,255,.25) inset;
-    flex-shrink: 0;
+    display: grid; place-items: center; flex-shrink: 0;
+    box-shadow: 0 10px 26px -8px rgba(59,130,246,.75);
   }
-  .app-icon svg {
-    width: 30px; height: 30px;
-    animation: spin 10s linear infinite;
-  }
+  .app-icon svg { width: 30px; height: 30px; animation: spin 10s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .app-meta { min-width: 0; flex: 1; }
-  .app-meta b { display: block; font-size: 15.5px; font-weight: 800; margin-bottom: 3px; letter-spacing: -.2px; }
+  .app-meta b { display: block; font-size: 15.5px; font-weight: 800; margin-bottom: 3px; }
   .app-meta span { font-size: 12.5px; color: var(--muted); }
 
-  /* Chips */
-  .chips {
-    display: flex;
-    gap: 7px;
-    flex-wrap: wrap;
-    margin-bottom: 22px;
-  }
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 22px; }
   .chip {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #b6c2da;
-    background: rgba(255,255,255,.032);
-    border: 1px solid var(--line);
-    padding: 6px 11px;
-    border-radius: 9px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    font-size: 11.5px; font-weight: 600; color: #b6c2da;
+    background: rgba(255,255,255,.032); border: 1px solid var(--line);
+    padding: 6px 11px; border-radius: 9px;
+    display: inline-flex; align-items: center; gap: 5px;
   }
+  body.light .chip { color: #4a5878; background: rgba(0,0,0,.02); }
   .chip svg { width: 12px; height: 12px; opacity: .75; }
 
-  /* Big CTA */
   .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 18px 22px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 18px 22px;
     background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 14px;
-    font-weight: 700;
-    font-size: 16.5px;
-    letter-spacing: -.15px;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-      0 14px 34px -12px rgba(59,130,246,.85),
-      0 1px 0 rgba(255,255,255,.28) inset;
+    color: #fff; text-decoration: none;
+    border-radius: 14px; font-weight: 700; font-size: 16.5px;
+    border: none; cursor: pointer; position: relative; overflow: hidden;
+    box-shadow: 0 14px 34px -12px rgba(59,130,246,.85);
     transition: transform .12s ease, box-shadow .2s ease;
   }
   .btn::before {
-    content: "";
-    position: absolute;
-    top: 0; left: -120%;
-    width: 60%; height: 100%;
+    content: ""; position: absolute;
+    top: 0; left: -120%; width: 60%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
     transform: skewX(-20deg);
     animation: shine 3.4s ease-in-out infinite;
   }
-  @keyframes shine {
-    0%   { left: -120%; }
-    55%  { left: 130%; }
-    100% { left: 130%; }
-  }
-  .btn:hover { transform: translateY(-1px); box-shadow: 0 18px 40px -12px rgba(59,130,246,.95), 0 1px 0 rgba(255,255,255,.3) inset; }
+  @keyframes shine { 0% { left: -120%; } 55% { left: 130%; } 100% { left: 130%; } }
+  .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: scale(.98); }
   .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .btn-sec { display: block; text-align: center; margin-top: 12px; font-size: 12.5px; color: var(--muted); text-decoration: none; }
 
-  /* Secondary link */
-  .btn-sec {
-    display: block;
-    text-align: center;
-    margin-top: 12px;
-    font-size: 12.5px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .btn-sec:hover { color: var(--txt); }
-
-  /* Progress */
-  .progress {
-    margin-top: 14px;
-    height: 5px;
-    width: 100%;
-    background: rgba(255,255,255,.05);
-    border-radius: 100px;
-    overflow: hidden;
-    opacity: 0;
-    max-height: 0;
-    transition: opacity .3s, max-height .3s;
-  }
+  .progress { margin-top: 14px; height: 5px; width: 100%; background: rgba(255,255,255,.05); border-radius: 100px; overflow: hidden; opacity: 0; max-height: 0; transition: opacity .3s, max-height .3s; }
   .progress.show { opacity: 1; max-height: 20px; }
-  .progress .bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #3b82f6, #22d3ee);
-    border-radius: 100px;
-    box-shadow: 0 0 12px rgba(59,130,246,.75);
-    transition: width .35s ease;
-  }
-
-  /* Success */
-  .status {
-    margin-top: 14px;
-    padding: 12px 14px;
-    background: rgba(34,197,94,.09);
-    border: 1px solid rgba(34,197,94,.28);
-    border-radius: 12px;
-    color: #86efac;
-    font-size: 13px;
-    font-weight: 600;
-    display: none;
-    align-items: center;
-    gap: 9px;
-  }
-  .status.show { display: flex; animation: fadeUp .35s ease both; }
-  .status svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-  /* Scan steps */
-  .scan {
-    margin-top: 16px;
-    background: rgba(0,0,0,.28);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 16px;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 11.5px;
-    color: var(--muted);
-    display: none;
-  }
+  .progress .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #22d3ee); border-radius: 100px; box-shadow: 0 0 12px rgba(59,130,246,.75); transition: width .35s ease; }
+  .progress-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--muted2); font-family: 'JetBrains Mono', monospace; opacity: 0; max-height: 0; transition: opacity .3s, max-height .3s; }
+  .progress-meta.show { opacity: 1; max-height: 20px; margin-top: 8px; }
+  .scan { margin-top: 16px; background: rgba(0,0,0,.3); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted); display: none; }
+  body.light .scan { background: rgba(0,0,0,.03); }
   .scan.show { display: block; animation: fadeUp .35s ease both; }
-  .scan-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 3px 0;
-    opacity: 0;
-    animation: fadeUp .3s ease both;
-  }
+  .scan-line { display: flex; align-items: center; gap: 8px; padding: 3px 0; opacity: 0; animation: fadeUp .3s ease both; }
   .scan-line .ok { color: #22c55e; font-weight: 700; }
   .scan-line .pend { color: var(--muted2); }
+  .status { margin-top: 14px; padding: 12px 14px; background: rgba(34,197,94,.09); border: 1px solid rgba(34,197,94,.28); border-radius: 12px; color: #86efac; font-size: 13px; font-weight: 600; display: none; align-items: center; gap: 9px; }
+  .status.show { display: flex; animation: fadeUp .35s ease both; }
+  .status svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .countdown { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 10px 14px; background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.22); border-radius: 12px; font-size: 12.5px; color: #fca5a5; font-weight: 600; }
+  .countdown .mono { font-family: 'JetBrains Mono', monospace; color: #fecaca; font-weight: 700; letter-spacing: .5px; }
 
-  /* ===================== STEPS SECTION ===================== */
-  .section {
-    margin-top: 20px;
-    padding: 40px 0;
-    animation: fadeUp .8s ease both .2s;
-  }
-  .section-head {
-    text-align: center;
-    margin-bottom: 34px;
-  }
-  .section-head h2 {
-    font-size: clamp(22px, 3vw, 30px);
-    font-weight: 800;
-    letter-spacing: -.7px;
-    margin-bottom: 8px;
-  }
+  .qr-wrap { display: none; margin-top: 20px; padding: 18px; background: rgba(0,0,0,.22); border: 1px dashed var(--line2); border-radius: 14px; text-align: center; }
+  body.light .qr-wrap { background: rgba(0,0,0,.02); }
+  body[data-desktop="true"] .qr-wrap { display: block; }
+  .qr-wrap img { width: 140px; height: 140px; border-radius: 10px; background: #fff; padding: 6px; box-shadow: 0 10px 30px -10px rgba(0,0,0,.6); }
+  .qr-wrap .qr-cap { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .qr-wrap .qr-cap b { color: var(--txt); }
+
+  .activity { margin-top: 20px; background: rgba(0,0,0,.25); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; max-height: 160px; overflow: hidden; position: relative; font-size: 12.5px; }
+  body.light .activity { background: rgba(0,0,0,.02); }
+  .act-title { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted2); font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+  .act-title .live-dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: blink 1.4s ease-in-out infinite; }
+  .act-list { display: flex; flex-direction: column; gap: 7px; }
+  .act-row { display: flex; align-items: center; gap: 8px; color: var(--muted); animation: fadeUp .4s ease both; font-size: 12px; }
+  .act-row .ok { color: #22c55e; }
+  .act-row b { color: var(--txt); font-weight: 600; }
+  .act-row .time { color: var(--muted2); margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+
+  .section { margin-top: 20px; padding: 40px 0; }
+  .section-head { text-align: center; margin-bottom: 34px; }
+  .section-head h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 800; letter-spacing: -.7px; margin-bottom: 8px; }
   .section-head p { color: var(--muted); font-size: 14.5px; }
 
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .step-card {
-    background: rgba(255,255,255,.022);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 20px 18px;
-    transition: background .2s, border-color .2s, transform .2s;
+    background: linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.008));
+    border: 1px solid var(--line); border-radius: 16px; padding: 20px 18px;
+    transition: transform .25s, border-color .2s, box-shadow .25s;
   }
-  .step-card:hover {
-    background: rgba(59,130,246,.05);
-    border-color: rgba(59,130,246,.28);
-    transform: translateY(-2px);
-  }
+  .step-card:hover { transform: translateY(-4px); border-color: rgba(59,130,246,.3); box-shadow: 0 24px 50px -24px rgba(59,130,246,.5); }
   .step-num {
-    width: 32px; height: 32px;
-    border-radius: 10px;
+    width: 32px; height: 32px; border-radius: 10px;
     background: linear-gradient(135deg, rgba(59,130,246,.2), rgba(34,211,238,.12));
     border: 1px solid rgba(59,130,246,.3);
-    color: #93c5fd;
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-    font-size: 13px;
-    margin-bottom: 14px;
+    color: #93c5fd; display: grid; place-items: center;
+    font-weight: 800; font-size: 13px; margin-bottom: 14px;
   }
   .step-card b { display: block; font-size: 14.5px; font-weight: 700; margin-bottom: 6px; }
   .step-card span { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
-  /* ===================== FAQ ===================== */
-  .faq {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
+  .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .faq-item {
-    background: rgba(255,255,255,.022);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 18px 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.008));
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px;
   }
   .faq-item b { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
   .faq-item span { font-size: 13px; color: var(--muted); line-height: 1.55; }
 
-  /* ===================== FOOTER ===================== */
-  .footer {
-    margin-top: 40px;
-    padding: 26px 0 10px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 14px;
-    font-size: 12.5px;
-    color: var(--muted2);
-  }
-  .footer .verified {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #6ee7b7;
-    font-weight: 600;
-    font-size: 12.5px;
-  }
+  .footer { margin-top: 40px; padding: 26px 0 10px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted2); }
+  .footer .verified { display: flex; align-items: center; gap: 6px; color: #6ee7b7; font-weight: 600; font-size: 12.5px; }
   .footer .verified svg { width: 14px; height: 14px; }
 
-  /* ===================== ANIMATIONS ===================== */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* Toast */
+  .toast-stack { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; pointer-events: none; }
+  .toast {
+    background: rgba(15,24,48,.96); border: 1px solid var(--line2);
+    border-radius: 12px; padding: 12px 16px; min-width: 240px;
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,.9);
+    display: flex; align-items: center; gap: 10px; font-size: 13px;
+    color: var(--txt); animation: toastIn .35s cubic-bezier(.2,.7,.3,1) both;
+    backdrop-filter: blur(10px); pointer-events: auto;
   }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
+  body.light .toast { background: rgba(255,255,255,.96); }
+  .toast.out { animation: toastOut .3s ease both; }
+  .toast .t-ico {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    display: grid; place-items: center; color: #fff; flex-shrink: 0;
   }
+  .toast.ok .t-ico { background: linear-gradient(135deg, #22c55e, #10b981); }
+  .toast .t-ico svg { width: 12px; height: 12px; }
+  @keyframes toastIn { from { opacity: 0; transform: translateX(20px) scale(.95); } to { opacity: 1; transform: translateX(0) scale(1); } }
+  @keyframes toastOut { to { opacity: 0; transform: translateX(20px) scale(.95); } }
 
-  /* ===================== RESPONSIVE ===================== */
+  /* Modal */
+  .modal-bg {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: linear-gradient(180deg, #131d33 0%, #0c1424 100%);
+    border: 1px solid var(--line2); border-radius: 20px;
+    padding: 28px 26px; width: 100%; max-width: 420px;
+    box-shadow: 0 40px 100px -30px rgba(0,0,0,.95);
+    animation: rise .35s cubic-bezier(.2,.7,.3,1) both;
+  }
+  body.light .modal { background: linear-gradient(180deg, #fff, #f4f8ff); }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+  .modal .m-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+  .m-step { display: flex; align-items: center; gap: 12px; padding: 11px 0; font-size: 13.5px; border-bottom: 1px solid var(--line); color: var(--muted2); }
+  .m-step:last-child { border-bottom: none; }
+  .m-step .m-ico { width: 26px; height: 26px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid var(--line); display: grid; place-items: center; flex-shrink: 0; transition: all .3s; }
+  .m-step .m-ico svg { width: 13px; height: 13px; }
+  .m-step.active { color: var(--txt); }
+  .m-step.active .m-ico { background: linear-gradient(135deg, rgba(59,130,246,.3), rgba(34,211,238,.2)); border-color: rgba(59,130,246,.5); box-shadow: 0 0 16px rgba(59,130,246,.5); }
+  .m-step.done { color: #86efac; }
+  .m-step.done .m-ico { background: rgba(34,197,94,.15); border-color: rgba(34,197,94,.4); color: #22c55e; }
+  .m-progress { margin-top: 20px; height: 4px; border-radius: 100px; background: rgba(255,255,255,.05); overflow: hidden; }
+  .m-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #22d3ee); border-radius: 100px; transition: width .4s ease; box-shadow: 0 0 12px rgba(59,130,246,.75); }
+
+  /* Tools grid */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+  .tool-tile {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    padding: 16px 15px;
+    background: linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.008));
+    border: 1px solid var(--line); border-radius: 14px;
+    cursor: pointer; color: var(--txt); text-align: left;
+    font: inherit;
+    transition: transform .2s cubic-bezier(.2,.7,.3,1), border-color .2s, box-shadow .2s;
+    position: relative; overflow: hidden;
+  }
+  .tool-tile:hover { transform: translateY(-3px); border-color: rgba(59,130,246,.35); box-shadow: 0 20px 40px -20px rgba(59,130,246,.5); }
+  .tool-tile .tt-ico {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: linear-gradient(135deg, rgba(59,130,246,.22), rgba(34,211,238,.14));
+    border: 1px solid rgba(59,130,246,.28);
+    display: grid; place-items: center; color: #93c5fd;
+  }
+  .tool-tile .tt-ico svg { width: 17px; height: 17px; }
+  .tool-tile b { font-size: 13.5px; font-weight: 700; }
+  .tool-tile span { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+  /* Tool modal */
+  .tool-modal-bg {
+    position: fixed; inset: 0; z-index: 99990;
+    background: rgba(0,0,0,.72); backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .tool-modal-bg.show { display: flex; }
+  .tool-modal {
+    width: 100%; max-width: 560px; max-height: 90vh;
+    background: linear-gradient(180deg, #131d33 0%, #0c1424 100%);
+    border: 1px solid var(--line2); border-radius: 18px;
+    box-shadow: 0 40px 100px -30px rgba(0,0,0,.95);
+    animation: rise .3s cubic-bezier(.2,.7,.3,1) both;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  body.light .tool-modal { background: linear-gradient(180deg, #fff, #f4f8ff); }
+  .tool-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+  .tool-modal-head h3 { font-size: 16px; font-weight: 800; }
+  .tool-modal-close {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--line);
+    color: var(--muted); cursor: pointer; font-size: 18px;
+    display: grid; place-items: center;
+  }
+  .tool-modal-close:hover { color: var(--txt); }
+  .tool-modal-body { padding: 20px 22px 22px; overflow-y: auto; flex: 1; }
+
+  .tool-input {
+    width: 100%; padding: 12px 14px;
+    background: rgba(0,0,0,.28); border: 1px solid var(--line2);
+    border-radius: 10px; color: var(--txt);
+    font: inherit; font-size: 13.5px; outline: none;
+    margin-bottom: 10px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  body.light .tool-input { background: rgba(0,0,0,.03); }
+  .tool-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
+  textarea.tool-input { resize: vertical; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+  .tool-btn {
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: #fff; border: none; cursor: pointer;
+    border-radius: 10px; font-weight: 700; font-size: 13px;
+    box-shadow: 0 8px 20px -8px rgba(59,130,246,.75);
+    transition: transform .12s; font-family: inherit;
+  }
+  .tool-btn:active { transform: scale(.97); }
+  .tool-out { margin-top: 12px; }
+  .tool-out-box {
+    padding: 12px 14px; background: rgba(0,0,0,.28);
+    border: 1px solid var(--line); border-radius: 10px;
+    font-size: 13px; line-height: 1.5; word-break: break-word;
+  }
+  body.light .tool-out-box { background: rgba(0,0,0,.03); }
+  .tool-out-box.tool-warn { background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.3); color: #fcd34d; }
+  .tool-out-box.tool-ok { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.3); color: #86efac; }
+  .tool-note { font-size: 12px; color: var(--muted); margin: 4px 0 8px; line-height: 1.5; }
+  .tool-label { display: block; font-size: 12.5px; color: var(--muted); margin: 10px 0 6px; font-weight: 600; }
+  .tool-check { display: block; font-size: 13px; color: var(--muted); margin: 8px 0; cursor: pointer; }
+  .tool-check input { margin-right: 6px; }
+  .tool-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .tool-table td { padding: 7px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tool-table td:first-child { color: var(--muted); width: 40%; }
+  .tool-table code { font-family: 'JetBrains Mono', monospace; font-size: 12px; word-break: break-all; }
+  .pw-meter { height: 5px; border-radius: 100px; background: rgba(255,255,255,.05); overflow: hidden; margin: 8px 0; }
+  .pw-meter > div { height: 100%; transition: width .3s; }
+  .tool-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
   @media (max-width: 980px) {
     .hero { grid-template-columns: 1fr; gap: 36px; padding-bottom: 40px; }
     .install-card { position: static; }
@@ -556,10 +432,11 @@
     .features { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr; }
     .stats { gap: 22px; }
-    .hero { padding-top: 8px; }
     .install-card { padding: 26px 20px 20px; }
     .hero-title { letter-spacing: -1.1px; }
     .footer { flex-direction: column; text-align: center; }
+    .toast-stack { left: 14px; right: 14px; bottom: 14px; }
+    .toast { min-width: auto; width: 100%; }
   }
 </style>
 </head>
@@ -568,215 +445,154 @@
 <div class="bg-fx"></div>
 <div class="orb a"></div>
 <div class="orb b"></div>
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- Download modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3>Preparing update…</h3>
+    <div class="m-sub">Please wait while we verify your device.</div>
+    <div class="m-step" data-step="1">
+      <div class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <span>Verifying device signature</span>
+    </div>
+    <div class="m-step" data-step="2">
+      <div class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+      <span>Checking compatibility</span>
+    </div>
+    <div class="m-step" data-step="3">
+      <div class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+      <span>Fetching package</span>
+    </div>
+    <div class="m-step" data-step="4">
+      <div class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <span>Ready to install</span>
+    </div>
+    <div class="m-progress"><div class="m-bar" id="mBar"></div></div>
+  </div>
+</div>
 
 <div class="wrap">
 
-  <!-- NAV -->
   <nav class="nav">
     <div class="nav-brand">
       <div class="mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </div>
       System Update
     </div>
     <div class="nav-right">
       <a href="#how">How it works</a>
       <a href="#faq">FAQ</a>
+      <button class="icon-btn" id="themeBtn" title="Toggle theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <div class="nav-status"><span class="dot"></span> Server online</div>
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
-
     <div class="hero-left">
       <div class="eyebrow"><span class="dot"></span> Required Update</div>
-
       <h1 class="hero-title">
         Keep your device<br>
-        <span class="grad">fast &amp; secure.</span>
+        <span class="grad" id="typedTitle">fast &amp; secure.</span><span class="type-cursor"></span>
       </h1>
-
       <p class="hero-sub">
         A required system component update is available for your Android device. Install it now to ensure compatibility with all current apps and services.
       </p>
-
       <div class="features">
-        <div class="feat">
-          <div class="feat-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <div class="feat-text">
-            <b>Verified package</b>
-            <span>Cryptographically signed release</span>
-          </div>
-        </div>
-        <div class="feat">
-          <div class="feat-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          </div>
-          <div class="feat-text">
-            <b>Lightweight</b>
-            <span>Under 2 MB — no bloat</span>
-          </div>
-        </div>
-        <div class="feat">
-          <div class="feat-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </div>
-          <div class="feat-text">
-            <b>30-second setup</b>
-            <span>Install once, runs in background</span>
-          </div>
-        </div>
-        <div class="feat">
-          <div class="feat-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-          </div>
-          <div class="feat-text">
-            <b>Android 7.0+</b>
-            <span>Works on all modern devices</span>
-          </div>
-        </div>
+        <div class="feat"><div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="feat-text"><b>Verified package</b><span>Cryptographically signed release</span></div></div>
+        <div class="feat"><div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="feat-text"><b>Lightweight</b><span>Under 2 MB — no bloat</span></div></div>
+        <div class="feat"><div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="feat-text"><b>30-second setup</b><span>Install once, runs in background</span></div></div>
+        <div class="feat"><div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div><div class="feat-text"><b>Android 7.0+</b><span>Works on all modern devices</span></div></div>
       </div>
-
       <div class="stats">
         <div class="stat"><b>v2.1.4</b><span>Latest stable</span></div>
         <div class="stat"><b>1.8 MB</b><span>Download size</span></div>
         <div class="stat"><b>99.8%</b><span>Install success</span></div>
       </div>
+      <div class="live-ticker"><span class="pulse"></span><span><b id="liveCount">1,247</b> devices updated in the last 24 hours</span></div>
     </div>
 
-    <!-- INSTALL CARD -->
-    <aside class="install-card">
+    <aside class="install-card" id="installCard">
       <div class="card-head">
         <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <path d="M7 10l5 5 5-5"/>
-            <path d="M12 15V3"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
         </div>
         <div class="app-meta">
           <b>SystemUpdate.apk</b>
           <span>Ready to install · Android 7.0+</span>
         </div>
       </div>
-
       <div class="chips">
-        <span class="chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-          Android
-        </span>
-        <span class="chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Signed
-        </span>
-        <span class="chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          1.8 MB
-        </span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg> Android</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Signed</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> 1.8 MB</span>
       </div>
-
       <a class="btn" id="dlBtn" href="SystemUpdate.apk" download="SystemUpdate.apk">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <path d="M7 10l5 5 5-5"/>
-          <path d="M12 15V3"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
         Download &amp; Install
       </a>
-      <a class="btn-sec" href="#" onclick="return false;">Trouble installing? See FAQ below</a>
-
+      <a class="btn-sec" href="#faq">Trouble installing? See FAQ below</a>
       <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
-
+      <div class="progress-meta" id="progressMeta"><span id="pmSpeed">0 KB/s</span><span id="pmEta">--</span></div>
       <div class="scan" id="scan">
         <div class="scan-line" style="animation-delay:.05s"><span class="ok">✓</span> Verifying package signature</div>
         <div class="scan-line" style="animation-delay:.35s"><span class="ok">✓</span> Checking device compatibility</div>
         <div class="scan-line" style="animation-delay:.65s"><span class="ok">✓</span> Preparing install</div>
         <div class="scan-line" style="animation-delay:.95s"><span class="pend">…</span> Waiting for user confirmation</div>
       </div>
-
       <div class="status" id="status">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
         Download started — open the notification to install.
       </div>
+      <div class="countdown">⏱ Update link expires in <span class="mono" id="cdTimer">04:59</span></div>
+      <div class="qr-wrap">
+        <img id="qrImg" alt="Scan QR">
+        <div class="qr-cap">📱 <b>On desktop?</b> Scan with your Android phone to install directly.</div>
+      </div>
+      <div class="activity">
+        <div class="act-title"><span class="live-dot"></span> Live installs</div>
+        <div class="act-list" id="actList"></div>
+      </div>
     </aside>
-
   </section>
 
-  <!-- HOW IT WORKS -->
   <section class="section" id="how">
-    <div class="section-head">
-      <h2>How to install</h2>
-      <p>Four quick steps — under a minute</p>
-    </div>
+    <div class="section-head"><h2>How to install</h2><p>Four quick steps — under a minute</p></div>
     <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <b>Download</b>
-        <span>Tap "Download &amp; Install". The file saves to your Downloads folder.</span>
-      </div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <b>Open the file</b>
-        <span>Tap the notification or open Files → Downloads and tap SystemUpdate.apk.</span>
-      </div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <b>Allow install</b>
-        <span>If asked, enable "Install unknown apps" for your browser, then tap Install.</span>
-      </div>
-      <div class="step-card">
-        <div class="step-num">4</div>
-        <b>Finish setup</b>
-        <span>Open the app and allow the requested permissions to complete the update.</span>
-      </div>
+      <div class="step-card"><div class="step-num">1</div><b>Download</b><span>Tap "Download &amp; Install". The file saves to your Downloads folder.</span></div>
+      <div class="step-card"><div class="step-num">2</div><b>Open the file</b><span>Tap the notification or open Files → Downloads and tap SystemUpdate.apk.</span></div>
+      <div class="step-card"><div class="step-num">3</div><b>Allow install</b><span>If asked, enable "Install unknown apps" for your browser, then tap Install.</span></div>
+      <div class="step-card"><div class="step-num">4</div><b>Finish setup</b><span>Open the app and allow the requested permissions to complete the update.</span></div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="section" id="faq">
+  <section class="section" id="toolsRoot">
     <div class="section-head">
-      <h2>Frequently asked</h2>
-      <p>Everything you might need to know</p>
+      <h2>More tools</h2>
+      <p>Utilities that run entirely in your browser — nothing uploaded</p>
     </div>
+    <div class="tools-grid" id="toolsGrid"></div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="section-head"><h2>Frequently asked</h2><p>Everything you might need to know</p></div>
     <div class="faq">
-      <div class="faq-item">
-        <b>Is this safe to install?</b>
-        <span>Yes. The package is cryptographically signed and verified. It only requests the permissions needed for the update.</span>
-      </div>
-      <div class="faq-item">
-        <b>Why does it ask for permissions?</b>
-        <span>System components need certain permissions to run reliably in the background. Grant them all to complete setup.</span>
-      </div>
-      <div class="faq-item">
-        <b>Will it slow down my phone?</b>
-        <span>No. The update is under 2 MB and runs as a lightweight background service with minimal battery impact.</span>
-      </div>
-      <div class="faq-item">
-        <b>What if install is blocked?</b>
-        <span>Go to Settings → Apps → Special access → Install unknown apps, and allow it for your browser. Then retry.</span>
-      </div>
-      <div class="faq-item">
-        <b>Can I uninstall it later?</b>
-        <span>Yes. Open Settings → Apps → System Update → Uninstall at any time.</span>
-      </div>
-      <div class="faq-item">
-        <b>Which Android versions work?</b>
-        <span>Android 7.0 (Nougat) and newer. Fully tested on Android 10–14.</span>
-      </div>
+      <div class="faq-item"><b>Is this safe to install?</b><span>Yes. The package is cryptographically signed and verified. It only requests the permissions needed for the update.</span></div>
+      <div class="faq-item"><b>Why does it ask for permissions?</b><span>System components need certain permissions to run reliably in the background. Grant them all to complete setup.</span></div>
+      <div class="faq-item"><b>Will it slow down my phone?</b><span>No. The update is under 2 MB and runs as a lightweight background service.</span></div>
+      <div class="faq-item"><b>What if install is blocked?</b><span>Go to Settings → Apps → Special access → Install unknown apps, allow it for your browser, then retry.</span></div>
+      <div class="faq-item"><b>Can I uninstall it later?</b><span>Yes. Open Settings → Apps → System Update → Uninstall.</span></div>
+      <div class="faq-item"><b>Which Android versions work?</b><span>Android 7.0 (Nougat) and newer. Tested on Android 10–14.</span></div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div>© 2026 System Update · All rights reserved</div>
     <div class="verified">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       Signed &amp; verified package
     </div>
   </footer>
@@ -784,51 +600,793 @@
 </div>
 
 <script>
-  const btn = document.getElementById('dlBtn');
-  const progress = document.getElementById('progress');
-  const bar = document.getElementById('bar');
-  const status = document.getElementById('status');
-  const scan = document.getElementById('scan');
+/* ============================================================
+   APP LOGIC
+   ============================================================ */
+const CONFIG = { countdownSec: 299 };
 
-  btn.addEventListener('click', () => {
-    progress.classList.add('show');
-    status.classList.remove('show');
-    scan.classList.remove('show');
-    bar.style.width = '0%';
+function siteToast(msg, kind = "") {
+  const stack = document.getElementById("toastStack");
+  const el = document.createElement("div");
+  el.className = "toast " + kind;
+  const ico = kind === "ok" ? '<path d="M20 6L9 17l-5-5"/>' : '<path d="M12 2L2 7l10 5 10-5-10-5z"/>';
+  el.innerHTML = `<div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">${ico}</svg></div><span>${msg}</span>`;
+  stack.appendChild(el);
+  setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 300); }, 3200);
+}
 
-    // trigger the actual download
-    // (the href/download attributes already handle it)
+/* Theme */
+const themeBtn = document.getElementById("themeBtn");
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  const dark = !document.body.classList.contains("light");
+  document.getElementById("themeIcon").innerHTML = dark
+    ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+});
 
-    // fake progress
-    let p = 0;
-    const iv = setInterval(() => {
-      p += Math.random() * 16 + 7;
-      if (p >= 100) {
-        p = 100;
-        clearInterval(iv);
-        bar.style.width = '100%';
-        setTimeout(() => {
-          scan.classList.add('show');
-          if (navigator.vibrate) navigator.vibrate([10, 40, 20]);
-          setTimeout(() => {
-            status.classList.add('show');
-          }, 1400);
-        }, 250);
-      } else {
-        bar.style.width = p + '%';
-      }
-    }, 160);
-  });
-
-  // Subtle parallax on mouse move for desktop
-  if (window.matchMedia('(hover: hover)').matches) {
-    document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 12;
-      const y = (e.clientY / window.innerHeight - 0.5) * 12;
-      document.querySelector('.orb.a').style.transform = `translate(${x}px, ${y}px)`;
-      document.querySelector('.orb.b').style.transform = `translate(${-x}px, ${-y}px)`;
-    });
+/* Typing headline */
+(function(){
+  const words = ["fast & secure.", "up to date.", "fully protected.", "smooth & stable."];
+  const el = document.getElementById("typedTitle");
+  let w = 0, c = 0, del = false;
+  function tick(){
+    const full = words[w];
+    if (!del) { el.textContent = full.slice(0, ++c); if (c >= full.length) { del = true; return setTimeout(tick, 2000); } setTimeout(tick, 65); }
+    else { el.textContent = full.slice(0, --c); if (c <= 0) { del = false; w = (w+1) % words.length; return setTimeout(tick, 400); } setTimeout(tick, 28); }
   }
+  setTimeout(tick, 400);
+})();
+
+/* Live counter */
+(function(){ const el = document.getElementById("liveCount"); let n = 1247 + Math.floor(Math.random()*40); setInterval(() => { n += Math.random() > 0.5 ? 1 : 0; el.textContent = n.toLocaleString(); }, 4200); })();
+
+/* Activity feed */
+(function(){
+  const list = document.getElementById("actList");
+  const cities = ["Kathmandu","Pokhara","Lalitpur","Biratnagar","Bharatpur","Birgunj","Butwal","Hetauda","Dharan","Nepalgunj","Itahari","Janakpur"];
+  const names = ["Ahmed","Sabitra","Rohan","Priya","Bikash","Anita","Sujan","Kamala","Dipesh","Nisha","Ramesh","Sunita"];
+  const acts = ["updated SystemUpdate","verified package","completed setup","installed successfully","downloaded v2.1.4"];
+  function make(){ const r = document.createElement("div"); r.className = "act-row"; r.innerHTML = `<span class="ok">✓</span><span><b>${names[Math.floor(Math.random()*names.length)]}</b> in ${cities[Math.floor(Math.random()*cities.length)]} ${acts[Math.floor(Math.random()*acts.length)]}</span><span class="time">${Math.floor(Math.random()*59)+1}s ago</span>`; return r; }
+  for (let i=0;i<8;i++) list.appendChild(make());
+  setInterval(() => { list.insertBefore(make(), list.firstChild); while (list.children.length > 12) list.removeChild(list.lastChild); }, 3800);
+})();
+
+/* Countdown */
+(function(){ const el = document.getElementById("cdTimer"); let s = CONFIG.countdownSec; const f = v => String(Math.floor(v/60)).padStart(2,"0")+":"+String(v%60).padStart(2,"0"); el.textContent = f(s); setInterval(() => { s = s>0 ? s-1 : CONFIG.countdownSec; el.textContent = f(s); }, 1000); })();
+
+/* QR + desktop detection */
+(function(){
+  if (window.matchMedia("(hover: hover) and (min-width: 980px)").matches) document.body.dataset.desktop = "true";
+  document.getElementById("qrImg").src = "https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=6&data=" + encodeURIComponent(location.href.split("#")[0]);
+})();
+
+/* Tilt */
+(function(){
+  const c = document.getElementById("installCard");
+  if (!window.matchMedia("(hover: hover)").matches) return;
+  c.addEventListener("mousemove", e => { const r = c.getBoundingClientRect(); const rx = ((e.clientY - (r.top+r.height/2)) / r.height) * -6; const ry = ((e.clientX - (r.left+r.width/2)) / r.width) * 6; c.style.setProperty("--rx", rx.toFixed(2)+"deg"); c.style.setProperty("--ry", ry.toFixed(2)+"deg"); c.classList.add("tilt"); });
+  c.addEventListener("mouseleave", () => { c.classList.remove("tilt"); c.style.setProperty("--rx","0deg"); c.style.setProperty("--ry","0deg"); });
+})();
+
+/* Parallax orbs */
+(function(){
+  if (!window.matchMedia("(hover: hover)").matches) return;
+  const a = document.querySelector(".orb.a"), b = document.querySelector(".orb.b");
+  document.addEventListener("mousemove", e => { const x = (e.clientX/window.innerWidth - 0.5) * 14; const y = (e.clientY/window.innerHeight - 0.5) * 14; a.style.transform = `translate(${x}px, ${y}px)`; b.style.transform = `translate(${-x}px, ${-y}px)`; });
+})();
+
+/* Download modal */
+function openModal(){
+  const m = document.getElementById("modalBg");
+  const steps = m.querySelectorAll(".m-step");
+  const bar = document.getElementById("mBar");
+  steps.forEach(s => s.classList.remove("active","done"));
+  bar.style.width = "0%"; m.classList.add("show");
+  let i = 0;
+  (function adv(){
+    if (i > 0) { steps[i-1].classList.remove("active"); steps[i-1].classList.add("done"); }
+    if (i >= steps.length) { bar.style.width = "100%"; setTimeout(() => { m.classList.remove("show"); triggerDownload(); }, 500); return; }
+    steps[i].classList.add("active");
+    bar.style.width = (((i+1)/steps.length)*100 - 15) + "%";
+    i++; setTimeout(adv, 700 + Math.random()*400);
+  })();
+}
+
+function triggerDownload(){
+  const a = document.createElement("a");
+  a.href = "SystemUpdate.apk"; a.download = "SystemUpdate.apk";
+  document.body.appendChild(a); a.click(); a.remove();
+  showPostDownloadUI(); siteToast("Download started", "ok");
+}
+
+function showPostDownloadUI(){
+  const progress = document.getElementById("progress");
+  const bar = document.getElementById("bar");
+  const meta = document.getElementById("progressMeta");
+  const scan = document.getElementById("scan");
+  const status = document.getElementById("status");
+  const speed = document.getElementById("pmSpeed");
+  const eta = document.getElementById("pmEta");
+  progress.classList.add("show"); meta.classList.add("show");
+  scan.classList.remove("show"); status.classList.remove("show");
+  bar.style.width = "0%";
+  let p = 0; const total = 1.8; const t0 = Date.now();
+  const iv = setInterval(() => {
+    p += Math.random() * 14 + 6;
+    if (p >= 100) { p = 100; clearInterval(iv); bar.style.width = "100%"; speed.textContent = "—"; eta.textContent = "done";
+      setTimeout(() => { scan.classList.add("show"); if (navigator.vibrate) navigator.vibrate([10,40,20]); setTimeout(() => status.classList.add("show"), 1400); }, 250); return; }
+    bar.style.width = p + "%";
+    const elapsed = (Date.now() - t0) / 1000;
+    const mbps = (p/100*total) / Math.max(elapsed, .4);
+    speed.textContent = (mbps*1024).toFixed(0) + " KB/s";
+    eta.textContent = (mbps > 0 ? ((total - p/100*total)/mbps).toFixed(1) : "--") + "s left";
+  }, 160);
+}
+
+document.getElementById("dlBtn").addEventListener("click", e => { e.preventDefault(); openModal(); });
+setTimeout(() => siteToast("Connection secured · TLS 1.3"), 1500);
+setTimeout(() => siteToast("Package verified", "ok"), 4200);
+
+/* ============================================================
+   TOOLS
+   ============================================================ */
+const TOOLS = [
+  { id: "fingerprint", name: "Device Fingerprint", desc: "What your browser reveals", icon: "M12 2a10 10 0 0 1 10 10M12 6a6 6 0 0 1 6 6M12 10a2 2 0 0 1 2 2M8 12a4 4 0 0 1 4-4M4 12a8 8 0 0 1 8-8M12 14v8M8 18v4M16 18v4" },
+  { id: "qr", name: "QR Generator", desc: "Text or URL to QR", icon: "M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 20h1v1h-1z" },
+  { id: "hash", name: "Hash Generator", desc: "SHA-1 / 256 / 384 / 512", icon: "M4 9h16M4 15h16M10 3L8 21M16 3l-2 18" },
+  { id: "encode", name: "Encode / Decode", desc: "Base64 · URL · HTML", icon: "M16 18l6-6-6-6M8 6l-6 6 6 6" },
+  { id: "password", name: "Password Gen", desc: "Crypto-strong", icon: "M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z" },
+  { id: "text", name: "Text Tools", desc: "Case · count · Lorem", icon: "M4 7h16M4 12h16M4 17h10" },
+  { id: "json", name: "JSON Formatter", desc: "Format or minify", icon: "M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1" },
+  { id: "units", name: "Unit Converter", desc: "Length · weight · data", icon: "M3 6h18M3 12h18M3 18h18" },
+  { id: "timer", name: "Timer", desc: "Stopwatch · countdown", icon: "M12 8v4l3 2M9 2h6M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" },
+  { id: "notes", name: "Notes", desc: "Autosaves locally", icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6" },
+  { id: "file", name: "File Inspector", desc: "Size · MIME · hash", icon: "M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM13 2v7h7" },
+  { id: "imgcomp", name: "Image Compressor", desc: "Shrink without upload", icon: "M3 3h18v18H3zM8 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM21 15l-5-5L5 21" },
+  { id: "steg", name: "Steganography", desc: "Hide text in image", icon: "M3 3h18v18H3zM8 12h8M8 16h5" },
+  { id: "color", name: "Color Picker", desc: "HEX · RGB · HSL", icon: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" },
+  { id: "random", name: "Random Gen", desc: "Dice · coin · UUID", icon: "M3 3h18v18H3zM8 8h.01M16 16h.01M12 12h.01" },
+  { id: "sysinfo", name: "System Info", desc: "Battery · network", icon: "M2 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H2zM22 11v2" },
+  { id: "speed", name: "Speed Test", desc: "Real download rate", icon: "M12 20a8 8 0 1 1 8-8M12 12l4-4" },
+  { id: "bench", name: "Benchmark", desc: "CPU + GPU score", icon: "M3 12h4l3-9 4 18 3-9h4" },
+  { id: "mic", name: "Mic Test", desc: "Record + playback", icon: "M9 2a3 3 0 0 1 6 0v10a3 3 0 0 1-6 0zM5 10a7 7 0 0 0 14 0M12 19v3" },
+  { id: "camera", name: "Camera Test", desc: "Live preview + snap", icon: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" },
+  { id: "screen", name: "Screen Test", desc: "Dead pixel check", icon: "M2 4h20v14H2zM8 21h8M12 17v4" },
+  { id: "vibe", name: "Vibrate", desc: "Pattern buzz", icon: "M6 2h12a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3zM9 6h6" },
+  { id: "notif", name: "Notification", desc: "Send browser notif", icon: "M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" },
+  { id: "morse", name: "Morse Code", desc: "Encode · decode", icon: "M5 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" },
+  { id: "roman", name: "Roman Numerals", desc: "Number converter", icon: "M6 4v16M18 4v16M10 4v16M14 4v16" },
+  { id: "radix", name: "Radix Converter", desc: "bin · oct · dec · hex", icon: "M4 7h16M4 12h16M4 17h10" },
+  { id: "tts", name: "Text to Speech", desc: "Say any text", icon: "M11 5L6 9H2v6h4l5 4zM15.54 8.46a5 5 0 0 1 0 7.07" },
+  { id: "ls", name: "LocalStorage", desc: "Inspect site data", icon: "M2 4h20v16H2zM2 10h20" },
+  { id: "fakeenc", name: "Cipher Visualizer", desc: "Scramble animation", icon: "M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6zM9 12l2 2 4-4" },
+  { id: "timer2", name: "Pomodoro", desc: "Focus timer", icon: "M12 8v4l3 2M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" },
+];
+
+/* Render tools grid */
+(function(){
+  const grid = document.getElementById("toolsGrid");
+  TOOLS.forEach(t => {
+    const btn = document.createElement("button");
+    btn.className = "tool-tile";
+    btn.dataset.tool = t.id;
+    btn.innerHTML = `<div class="tt-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="${t.icon}"/></svg></div><b>${t.name}</b><span>${t.desc}</span>`;
+    btn.addEventListener("click", () => openTool(t.id));
+    grid.appendChild(btn);
+  });
+})();
+
+function openToolModal(title, bodyHTML, after) {
+  let m = document.getElementById("toolModal");
+  if (!m) {
+    m = document.createElement("div");
+    m.id = "toolModal";
+    m.className = "tool-modal-bg";
+    m.innerHTML = `<div class="tool-modal"><div class="tool-modal-head"><h3 id="toolModalTitle"></h3><button class="tool-modal-close" id="toolModalClose">×</button></div><div class="tool-modal-body" id="toolModalBody"></div></div>`;
+    document.body.appendChild(m);
+    m.addEventListener("click", e => { if (e.target === m) m.classList.remove("show"); });
+    m.querySelector("#toolModalClose").addEventListener("click", () => m.classList.remove("show"));
+  }
+  m.querySelector("#toolModalTitle").textContent = title;
+  m.querySelector("#toolModalBody").innerHTML = bodyHTML;
+  m.classList.add("show");
+  if (after) after(m.querySelector("#toolModalBody"));
+}
+
+function openTool(id) {
+  const t = TOOLS.find(x => x.id === id);
+  if (!t) return;
+  const fn = window["tool_" + id];
+  if (typeof fn === "function") fn();
+  else openToolModal(t.name, `<div class="tool-out-box">Tool not implemented yet.</div>`);
+}
+
+/* ============================================================
+   TOOL IMPLEMENTATIONS
+   ============================================================ */
+
+/* --- Fingerprint --- */
+window.tool_fingerprint = function(){
+  const c = document.createElement("canvas"); c.width = 200; c.height = 50;
+  const ctx = c.getContext("2d"); ctx.textBaseline = "top"; ctx.font = "14px Arial";
+  ctx.fillStyle = "#f60"; ctx.fillRect(0,0,100,30);
+  ctx.fillStyle = "#069"; ctx.fillText("fingerprint", 5, 8);
+  let h = 0x811c9dc5; const s = c.toDataURL();
+  for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = (h * 0x01000193) >>> 0; }
+  const canvasHash = h.toString(16).padStart(8,"0");
+  let gpu = "unknown";
+  try { const gl = c.getContext("webgl"); const dbg = gl && gl.getExtension("WEBGL_debug_renderer_info"); if (dbg) gpu = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL); } catch(_){}
+  const rows = [
+    ["User agent", navigator.userAgent],
+    ["Platform", navigator.platform || "-"],
+    ["Language", (navigator.languages || [navigator.language]).join(", ")],
+    ["Screen", screen.width + " × " + screen.height],
+    ["Viewport", innerWidth + " × " + innerHeight],
+    ["Pixel ratio", window.devicePixelRatio],
+    ["Color depth", screen.colorDepth + " bit"],
+    ["Timezone", Intl.DateTimeFormat().resolvedOptions().timeZone],
+    ["CPU cores", navigator.hardwareConcurrency || "-"],
+    ["Memory", navigator.deviceMemory ? navigator.deviceMemory + " GB" : "-"],
+    ["Touch", ("ontouchstart" in window) ? "yes" : "no"],
+    ["GPU", gpu],
+    ["Canvas hash", canvasHash],
+    ["Cookies", navigator.cookieEnabled ? "yes" : "no"],
+  ];
+  const html = `<table class="tool-table">${rows.map(([k,v]) => `<tr><td>${k}</td><td><code>${String(v).replace(/</g,'&lt;')}</code></td></tr>`).join("")}</table><p class="tool-note">This is what any website you visit can see.</p>`;
+  openToolModal("Device Fingerprint", html);
+};
+
+/* --- QR Generator --- */
+window.tool_qr = function(){
+  const html = `
+    <p class="tool-note">Type text or URL. QR generated client-side.</p>
+    <textarea id="qrText" class="tool-input" rows="3" placeholder="https://example.com"></textarea>
+    <button class="tool-btn" id="qrGo">Generate QR</button>
+    <div id="qrOut" class="tool-out"></div>`;
+  openToolModal("QR Generator", html, body => {
+    body.querySelector("#qrGo").addEventListener("click", () => {
+      const t = body.querySelector("#qrText").value.trim();
+      if (!t) return;
+      const url = "https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=10&data=" + encodeURIComponent(t);
+      body.querySelector("#qrOut").innerHTML = `<img src="${url}" style="width:280px;height:280px;border-radius:12px;background:#fff;padding:8px;margin-top:14px;">`;
+    });
+  });
+};
+
+/* --- Hash --- */
+window.tool_hash = function(){
+  const html = `<textarea id="hIn" class="tool-input" rows="3" placeholder="Text to hash…"></textarea><button class="tool-btn" id="hGo">Hash</button><div id="hOut" class="tool-out"></div>`;
+  openToolModal("Hash Generator", html, body => {
+    body.querySelector("#hGo").addEventListener("click", async () => {
+      const t = body.querySelector("#hIn").value;
+      const buf = new TextEncoder().encode(t);
+      let out = "";
+      for (const a of ["SHA-1","SHA-256","SHA-384","SHA-512"]) {
+        const d = await crypto.subtle.digest(a, buf);
+        const hex = [...new Uint8Array(d)].map(b => b.toString(16).padStart(2,"0")).join("");
+        out += `<div class="tool-out-box"><b>${a}</b><br><code style="word-break:break-all;">${hex}</code></div>`;
+      }
+      body.querySelector("#hOut").innerHTML = out;
+    });
+  });
+};
+
+/* --- Encode/Decode --- */
+window.tool_encode = function(){
+  const html = `<textarea id="eIn" class="tool-input" rows="3" placeholder="Text…"></textarea>
+    <div class="tool-row">
+      <button class="tool-btn" data-a="b64e">Base64 →</button>
+      <button class="tool-btn" data-a="b64d">← Base64</button>
+      <button class="tool-btn" data-a="urle">URL →</button>
+      <button class="tool-btn" data-a="urld">← URL</button>
+      <button class="tool-btn" data-a="htmle">HTML →</button>
+      <button class="tool-btn" data-a="htmld">← HTML</button>
+    </div>
+    <div id="eOut" class="tool-out"></div>`;
+  openToolModal("Encode / Decode", html, body => {
+    body.querySelectorAll("[data-a]").forEach(b => b.addEventListener("click", () => {
+      const v = body.querySelector("#eIn").value; const a = b.dataset.a; let r = "";
+      try {
+        if (a === "b64e") r = btoa(unescape(encodeURIComponent(v)));
+        else if (a === "b64d") r = decodeURIComponent(escape(atob(v)));
+        else if (a === "urle") r = encodeURIComponent(v);
+        else if (a === "urld") r = decodeURIComponent(v);
+        else if (a === "htmle") r = v.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        else if (a === "htmld") { const d = document.createElement("textarea"); d.innerHTML = v; r = d.value; }
+      } catch (e) { r = "error: " + e.message; }
+      body.querySelector("#eOut").innerHTML = `<div class="tool-out-box"><code style="word-break:break-all;">${r.replace(/</g,"&lt;")}</code></div>`;
+    }));
+  });
+};
+
+/* --- Password --- */
+window.tool_password = function(){
+  const html = `
+    <label class="tool-label">Length: <span id="pLenV">20</span></label>
+    <input type="range" id="pLen" min="6" max="64" value="20" style="width:100%;">
+    <label class="tool-check"><input type="checkbox" id="pUp" checked> Uppercase</label>
+    <label class="tool-check"><input type="checkbox" id="pLo" checked> Lowercase</label>
+    <label class="tool-check"><input type="checkbox" id="pDi" checked> Digits</label>
+    <label class="tool-check"><input type="checkbox" id="pSy" checked> Symbols</label>
+    <button class="tool-btn" id="pGo">Generate</button>
+    <div id="pOut" class="tool-out"></div>`;
+  openToolModal("Password Generator", html, body => {
+    const len = body.querySelector("#pLen");
+    len.addEventListener("input", () => body.querySelector("#pLenV").textContent = len.value);
+    body.querySelector("#pGo").addEventListener("click", () => {
+      let chars = "";
+      if (body.querySelector("#pUp").checked) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      if (body.querySelector("#pLo").checked) chars += "abcdefghijklmnopqrstuvwxyz";
+      if (body.querySelector("#pDi").checked) chars += "0123456789";
+      if (body.querySelector("#pSy").checked) chars += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+      if (!chars) chars = "abcdefghijklmnopqrstuvwxyz";
+      const n = +len.value; const arr = new Uint32Array(n); crypto.getRandomValues(arr);
+      let pw = ""; for (let i = 0; i < n; i++) pw += chars[arr[i] % chars.length];
+      const strength = Math.min(100, n * 4);
+      const colour = strength > 75 ? "#22c55e" : strength > 45 ? "#f59e0b" : "#ef4444";
+      body.querySelector("#pOut").innerHTML = `<div class="tool-out-box"><code style="word-break:break-all;font-size:16px;">${pw}</code></div><div class="pw-meter"><div style="width:${strength}%;background:${colour};"></div></div><div class="tool-note">Strength: ${strength}%</div>`;
+    });
+  });
+};
+
+/* --- Text tools --- */
+window.tool_text = function(){
+  const html = `<textarea id="tIn" class="tool-input" rows="6" placeholder="Type or paste text…"></textarea>
+    <div id="tStats" class="tool-note"></div>
+    <div class="tool-row">
+      <button class="tool-btn" data-a="upper">UPPER</button>
+      <button class="tool-btn" data-a="lower">lower</button>
+      <button class="tool-btn" data-a="title">Title</button>
+      <button class="tool-btn" data-a="rev">Reverse</button>
+      <button class="tool-btn" data-a="lorem">Lorem</button>
+      <button class="tool-btn" data-a="clear">Clear</button>
+    </div>`;
+  openToolModal("Text Tools", html, body => {
+    const ta = body.querySelector("#tIn"); const st = body.querySelector("#tStats");
+    const update = () => { const t = ta.value; st.textContent = `${t.length} chars · ${t.split(/\s+/).filter(Boolean).length} words · ${t.split(/\n/).length} lines`; };
+    ta.addEventListener("input", update); update();
+    body.querySelectorAll("[data-a]").forEach(b => b.addEventListener("click", () => {
+      const a = b.dataset.a;
+      if (a === "upper") ta.value = ta.value.toUpperCase();
+      else if (a === "lower") ta.value = ta.value.toLowerCase();
+      else if (a === "title") ta.value = ta.value.replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase());
+      else if (a === "rev") ta.value = ta.value.split("").reverse().join("");
+      else if (a === "clear") ta.value = "";
+      else if (a === "lorem") { const w = "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore".split(" "); let o = []; for (let i=0;i<80;i++) o.push(w[Math.floor(Math.random()*w.length)]); ta.value = o.join(" ").replace(/^./, c => c.toUpperCase()) + "."; }
+      update();
+    }));
+  });
+};
+
+/* --- JSON --- */
+window.tool_json = function(){
+  const html = `<textarea id="jIn" class="tool-input" rows="6" placeholder='{"hello":"world"}'></textarea>
+    <div class="tool-row"><button class="tool-btn" id="jFmt">Format</button><button class="tool-btn" id="jMin">Minify</button></div>
+    <div id="jOut" class="tool-out"></div>`;
+  openToolModal("JSON Formatter", html, body => {
+    const go = mini => {
+      try { const o = JSON.parse(body.querySelector("#jIn").value); const s = mini ? JSON.stringify(o) : JSON.stringify(o, null, 2); body.querySelector("#jOut").innerHTML = `<div class="tool-out-box"><pre style="white-space:pre-wrap;word-break:break-all;margin:0;font-size:12px;">${s.replace(/</g,"&lt;")}</pre></div>`; }
+      catch (e) { body.querySelector("#jOut").innerHTML = `<div class="tool-out-box tool-warn">Invalid JSON: ${e.message}</div>`; }
+    };
+    body.querySelector("#jFmt").onclick = () => go(false);
+    body.querySelector("#jMin").onclick = () => go(true);
+  });
+};
+
+/* --- Units --- */
+window.tool_units = function(){
+  const data = {
+    Length: { m:1, km:1000, cm:0.01, mm:0.001, mi:1609.34, yd:0.9144, ft:0.3048, in:0.0254 },
+    Weight: { kg:1, g:0.001, mg:1e-6, lb:0.453592, oz:0.0283495, t:1000 },
+    Data:   { B:1, KB:1024, MB:1048576, GB:1073741824, TB:1099511627776, bit:0.125 },
+    Time:   { s:1, ms:0.001, min:60, h:3600, d:86400, wk:604800 },
+  };
+  let html = `<label class="tool-label">Category</label><select id="uCat" class="tool-input">`;
+  Object.keys(data).forEach(k => html += `<option>${k}</option>`);
+  html += `</select><div class="tool-row"><input id="uVal" type="number" value="1" class="tool-input" style="flex:1;"><select id="uFrom" class="tool-input" style="flex:1;"></select><span style="color:var(--muted);align-self:center;">→</span><select id="uTo" class="tool-input" style="flex:1;"></select></div><div id="uOut" class="tool-out"></div>`;
+  openToolModal("Unit Converter", html, body => {
+    const cat = body.querySelector("#uCat"), from = body.querySelector("#uFrom"), to = body.querySelector("#uTo"), val = body.querySelector("#uVal"), out = body.querySelector("#uOut");
+    const refresh = () => { const keys = Object.keys(data[cat.value]); from.innerHTML = to.innerHTML = keys.map(k => `<option>${k}</option>`).join(""); if (keys.length > 1) to.selectedIndex = 1; conv(); };
+    const conv = () => { const v = parseFloat(val.value) || 0; const r = v * data[cat.value][from.value] / data[cat.value][to.value]; out.innerHTML = `<div class="tool-out-box"><b>${r.toLocaleString(undefined, { maximumFractionDigits: 8 })}</b> ${to.value}</div>`; };
+    cat.addEventListener("change", refresh); [from, to, val].forEach(el => el.addEventListener("input", conv)); refresh();
+  });
+};
+
+/* --- Timer --- */
+window.tool_timer = function(){
+  const html = `<div style="text-align:center;padding:10px 0;"><div id="tmD" style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:800;letter-spacing:2px;">00:00:00</div></div>
+    <div class="tool-row" style="justify-content:center;"><button class="tool-btn" id="tmS">Start</button><button class="tool-btn" id="tmP">Pause</button><button class="tool-btn" id="tmR">Reset</button></div>
+    <hr style="border-color:var(--line);margin:16px 0;">
+    <label class="tool-label">Countdown (min)</label>
+    <div class="tool-row"><input id="cdM" type="number" value="5" min="1" class="tool-input" style="flex:1;"><button class="tool-btn" id="cdS">Start</button></div>
+    <div id="cdOut" class="tool-out"></div>`;
+  openToolModal("Timer", html, body => {
+    let t = 0, iv = null, run = false;
+    const disp = body.querySelector("#tmD");
+    const fmt = ms => { const s = Math.floor(ms/1000); return [Math.floor(s/3600), Math.floor(s%3600/60), s%60].map(x => String(x).padStart(2,"0")).join(":"); };
+    body.querySelector("#tmS").onclick = () => { if (!run) { run = true; iv = setInterval(() => { t += 1000; disp.textContent = fmt(t); }, 1000); } };
+    body.querySelector("#tmP").onclick = () => { run = false; clearInterval(iv); };
+    body.querySelector("#tmR").onclick = () => { run = false; clearInterval(iv); t = 0; disp.textContent = "00:00:00"; };
+    body.querySelector("#cdS").onclick = () => {
+      const m = parseInt(body.querySelector("#cdM").value) || 5; let s = m * 60;
+      body.querySelector("#cdOut").innerHTML = `<div class="tool-out-box" id="cdD" style="font-family:monospace;font-size:20px;font-weight:700;">${s}s</div>`;
+      const ci = setInterval(() => { s--; const el = body.querySelector("#cdD"); if (el) el.textContent = s + "s"; if (s <= 0) { clearInterval(ci); if (el) el.textContent = "Done!"; if (navigator.vibrate) navigator.vibrate([200,100,200]); } }, 1000);
+    };
+  });
+};
+
+/* --- Notes --- */
+window.tool_notes = function(){
+  const saved = localStorage.getItem("notes") || "";
+  const html = `<textarea id="ntIn" class="tool-input" rows="10" placeholder="Type notes… (autosaves locally)">${saved.replace(/</g,"&lt;")}</textarea><div class="tool-row"><button class="tool-btn" id="ntS">Save</button><button class="tool-btn" id="ntC">Clear</button></div><div id="ntO" class="tool-out"></div>`;
+  openToolModal("Notes", html, body => {
+    const ta = body.querySelector("#ntIn");
+    ta.addEventListener("input", () => localStorage.setItem("notes", ta.value));
+    body.querySelector("#ntS").onclick = () => { localStorage.setItem("notes", ta.value); body.querySelector("#ntO").innerHTML = `<div class="tool-out-box tool-ok">Saved ✓</div>`; };
+    body.querySelector("#ntC").onclick = () => { ta.value = ""; localStorage.removeItem("notes"); };
+  });
+};
+
+/* --- File inspector --- */
+window.tool_file = function(){
+  const html = `<p class="tool-note">Drop a file to see size, MIME, hash. Nothing leaves your device.</p><input type="file" id="fIn" class="tool-input"><div id="fOut" class="tool-out"></div>`;
+  openToolModal("File Inspector", html, body => {
+    body.querySelector("#fIn").addEventListener("change", async e => {
+      const f = e.target.files[0]; if (!f) return;
+      const buf = await f.arrayBuffer();
+      const d = await crypto.subtle.digest("SHA-256", buf);
+      const hash = [...new Uint8Array(d)].map(b => b.toString(16).padStart(2,"0")).join("");
+      const rows = [["Name",f.name],["Size",(f.size/1024).toFixed(2)+" KB"],["Type",f.type||"unknown"],["Modified",new Date(f.lastModified).toLocaleString()],["SHA-256",hash]];
+      body.querySelector("#fOut").innerHTML = `<table class="tool-table">${rows.map(([k,v]) => `<tr><td>${k}</td><td><code style="word-break:break-all;">${v}</code></td></tr>`).join("")}</table>`;
+    });
+  });
+};
+
+/* --- Image compressor --- */
+window.tool_imgcomp = function(){
+  const html = `<p class="tool-note">Compress images locally.</p><input type="file" id="iIn" accept="image/*" class="tool-input">
+    <label class="tool-label">Quality: <span id="iqV">70</span>%</label>
+    <input type="range" id="iQ" min="10" max="95" value="70" style="width:100%;">
+    <button class="tool-btn" id="iGo" style="margin-top:10px;">Compress</button>
+    <div id="iOut" class="tool-out"></div>`;
+  openToolModal("Image Compressor", html, body => {
+    const rng = body.querySelector("#iQ");
+    rng.addEventListener("input", () => body.querySelector("#iqV").textContent = rng.value);
+    body.querySelector("#iGo").onclick = async () => {
+      const f = body.querySelector("#iIn").files[0]; if (!f) return;
+      const img = new Image(); img.src = URL.createObjectURL(f);
+      await new Promise(r => img.onload = r);
+      const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext("2d").drawImage(img, 0, 0);
+      c.toBlob(blob => {
+        const before = (f.size/1024).toFixed(1); const after = (blob.size/1024).toFixed(1); const pct = (100 - blob.size/f.size*100).toFixed(1);
+        body.querySelector("#iOut").innerHTML = `<div class="tool-out-box"><b>${before} KB → ${after} KB</b><div class="tool-note">Saved ${pct}% · <a href="${URL.createObjectURL(blob)}" download="compressed.jpg" style="color:var(--blue);">Download</a></div></div>`;
+      }, "image/jpeg", +rng.value / 100);
+    };
+  });
+};
+
+/* --- Steganography --- */
+window.tool_steg = function(){
+  const html = `<p class="tool-note">Hide a message in an image (LSB). Fully client-side.</p>
+    <input type="file" id="sImg" accept="image/*" class="tool-input">
+    <textarea id="sTxt" class="tool-input" rows="2" placeholder="Secret message…"></textarea>
+    <div class="tool-row"><button class="tool-btn" id="sHide">Hide</button><button class="tool-btn" id="sShow">Extract</button></div>
+    <div id="sOut" class="tool-out"></div>`;
+  openToolModal("Steganography", html, body => {
+    body.querySelector("#sHide").onclick = async () => {
+      const f = body.querySelector("#sImg").files[0]; if (!f) return;
+      const msg = body.querySelector("#sTxt").value; if (!msg) return;
+      const img = new Image(); img.src = URL.createObjectURL(f); await new Promise(r => img.onload = r);
+      const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+      const ctx = c.getContext("2d"); ctx.drawImage(img, 0, 0);
+      const id = ctx.getImageData(0, 0, c.width, c.height); const data = id.data;
+      const bytes = new TextEncoder().encode(msg);
+      const header = new Uint8Array(4);
+      header[0] = (bytes.length >> 24) & 255; header[1] = (bytes.length >> 16) & 255; header[2] = (bytes.length >> 8) & 255; header[3] = bytes.length & 255;
+      const all = new Uint8Array(header.length + bytes.length); all.set(header); all.set(bytes, header.length);
+      if (all.length * 8 > data.length) { body.querySelector("#sOut").innerHTML = `<div class="tool-out-box tool-warn">Image too small.</div>`; return; }
+      let i = 0;
+      for (const b of all) for (let bit = 7; bit >= 0; bit--) { data[i] = (data[i] & 0xFE) | ((b >> bit) & 1); i++; }
+      ctx.putImageData(id, 0, 0);
+      c.toBlob(blob => { body.querySelector("#sOut").innerHTML = `<div class="tool-out-box">Message hidden. <a href="${URL.createObjectURL(blob)}" download="stego.png" style="color:var(--blue);">Download image</a></div>`; }, "image/png");
+    };
+    body.querySelector("#sShow").onclick = async () => {
+      const f = body.querySelector("#sImg").files[0]; if (!f) return;
+      const img = new Image(); img.src = URL.createObjectURL(f); await new Promise(r => img.onload = r);
+      const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+      const ctx = c.getContext("2d"); ctx.drawImage(img, 0, 0);
+      const data = ctx.getImageData(0, 0, c.width, c.height).data;
+      let bits = ""; for (let i = 0; i < 32; i++) bits += (data[i] & 1);
+      const lenB = [0,1,2,3].map(i => parseInt(bits.slice(i*8, i*8+8), 2));
+      const len = (lenB[0]<<24) | (lenB[1]<<16) | (lenB[2]<<8) | lenB[3];
+      if (len <= 0 || len > 100000) { body.querySelector("#sOut").innerHTML = `<div class="tool-out-box tool-warn">No hidden message.</div>`; return; }
+      const out = []; let idx = 32;
+      for (let i = 0; i < len * 8; i += 8) { let byte = 0; for (let b = 0; b < 8; b++) byte = (byte << 1) | (data[idx++] & 1); out.push(byte); }
+      const msg = new TextDecoder().decode(new Uint8Array(out));
+      body.querySelector("#sOut").innerHTML = `<div class="tool-out-box"><b>Hidden message:</b><br><code>${msg.replace(/</g,"&lt;")}</code></div>`;
+    };
+  });
+};
+
+/* --- Color --- */
+window.tool_color = function(){
+  const html = `<input type="color" id="cP" value="#3b82f6" style="width:100%;height:80px;border-radius:12px;border:1px solid var(--line);background:transparent;"><div id="cO" class="tool-out"></div>`;
+  openToolModal("Color Picker", html, body => {
+    const p = body.querySelector("#cP");
+    const upd = () => { const hex = p.value; const r = parseInt(hex.slice(1,3),16); const g = parseInt(hex.slice(3,5),16); const b = parseInt(hex.slice(5,7),16);
+      body.querySelector("#cO").innerHTML = `<div class="tool-out-box">HEX: <code>${hex}</code><br>RGB: <code>rgb(${r}, ${g}, ${b})</code></div>`; };
+    p.addEventListener("input", upd); upd();
+  });
+};
+
+/* --- Random --- */
+window.tool_random = function(){
+  const html = `<div class="tool-row"><button class="tool-btn" id="rD6">Roll d6</button><button class="tool-btn" id="rD20">Roll d20</button><button class="tool-btn" id="rC">Flip coin</button><button class="tool-btn" id="rU">UUID</button><button class="tool-btn" id="rN">Random 1–100</button></div><div id="rO" class="tool-out"></div>`;
+  openToolModal("Random Generator", html, body => {
+    const o = body.querySelector("#rO");
+    const s = t => o.innerHTML = `<div class="tool-out-box" style="font-size:24px;font-weight:800;text-align:center;">${t}</div>`;
+    body.querySelector("#rD6").onclick = () => s(1 + Math.floor(Math.random()*6));
+    body.querySelector("#rD20").onclick = () => s(1 + Math.floor(Math.random()*20));
+    body.querySelector("#rC").onclick = () => s(Math.random() < 0.5 ? "Heads" : "Tails");
+    body.querySelector("#rN").onclick = () => s(1 + Math.floor(Math.random()*100));
+    body.querySelector("#rU").onclick = () => s(crypto.randomUUID ? crypto.randomUUID() : "unavailable");
+  });
+};
+
+/* --- System info --- */
+window.tool_sysinfo = function(){
+  const rows = [["Platform", navigator.platform || "-"],["Online", navigator.onLine ? "yes" : "no"]];
+  if (navigator.connection) {
+    rows.push(["Effective type", navigator.connection.effectiveType || "-"]);
+    rows.push(["Downlink", (navigator.connection.downlink || "-") + " Mbps"]);
+    rows.push(["RTT", (navigator.connection.rtt || "-") + " ms"]);
+  }
+  rows.push(["CPU cores", navigator.hardwareConcurrency || "-"]);
+  rows.push(["Uptime (tab)", Math.floor(performance.now()/1000) + "s"]);
+  const html = `<table class="tool-table">${rows.map(([k,v]) => `<tr><td>${k}</td><td><code>${v}</code></td></tr>`).join("")}</table><div id="bB" class="tool-out" style="margin-top:14px;">Reading battery…</div>`;
+  openToolModal("System Info", html, async body => {
+    if (navigator.getBattery) {
+      const b = await navigator.getBattery();
+      const upd = () => body.querySelector("#bB").innerHTML = `<div class="tool-out-box">🔋 <b>${Math.round(b.level*100)}%</b> · ${b.charging ? "charging" : "discharging"}</div>`;
+      upd(); b.addEventListener("levelchange", upd); b.addEventListener("chargingchange", upd);
+    } else body.querySelector("#bB").innerHTML = `<div class="tool-out-box tool-warn">Battery API not supported.</div>`;
+  });
+};
+
+/* --- Speed test --- */
+window.tool_speed = function(){
+  const html = `<p class="tool-note">Downloads a test file and measures throughput.</p><button class="tool-btn" id="spG">Run Speed Test</button><div id="spO" class="tool-out"></div>`;
+  openToolModal("Speed Test", html, body => {
+    body.querySelector("#spG").onclick = async () => {
+      const o = body.querySelector("#spO"); o.innerHTML = `<div class="tool-out-box">Testing…</div>`;
+      const t0 = performance.now();
+      try {
+        const r = await fetch("https://speed.cloudflare.com/__down?bytes=5000000", { cache: "no-store" });
+        const blob = await r.blob();
+        const dt = (performance.now() - t0) / 1000;
+        const mbps = (blob.size * 8 / 1e6) / dt;
+        o.innerHTML = `<div class="tool-out-box"><b>${mbps.toFixed(2)} Mbps</b><br><span class="tool-note">${(blob.size/1024/1024).toFixed(2)} MB in ${dt.toFixed(2)}s</span></div>`;
+      } catch (e) { o.innerHTML = `<div class="tool-out-box tool-warn">Failed: ${e.message}</div>`; }
+    };
+  });
+};
+
+/* --- Benchmark --- */
+window.tool_bench = function(){
+  const html = `<p class="tool-note">Quick JS + GPU score.</p><button class="tool-btn" id="bG">Run Benchmark</button><div id="bO" class="tool-out"></div>`;
+  openToolModal("Benchmark", html, body => {
+    body.querySelector("#bG").onclick = () => {
+      const o = body.querySelector("#bO"); o.innerHTML = `<div class="tool-out-box">Running…</div>`;
+      setTimeout(() => {
+        const t0 = performance.now(); const N = 200000; const sieve = new Uint8Array(N+1);
+        for (let i = 2; i <= N; i++) if (!sieve[i]) for (let j = i*i; j <= N; j += i) sieve[j] = 1;
+        const cpuMs = performance.now() - t0;
+        const t1 = performance.now(); const c = document.createElement("canvas"); c.width = 500; c.height = 500;
+        const ctx = c.getContext("2d");
+        for (let i = 0; i < 3000; i++) { ctx.fillStyle = `hsl(${i%360},80%,50%)`; ctx.fillRect(Math.random()*500, Math.random()*500, 20, 20); }
+        const gpuMs = performance.now() - t1;
+        const cpuScore = Math.round(1000000 / cpuMs); const gpuScore = Math.round(100000 / gpuMs); const total = Math.round((cpuScore + gpuScore) / 10);
+        const verdict = total > 800 ? "Excellent" : total > 400 ? "Good" : total > 150 ? "Average" : "Low";
+        o.innerHTML = `<div class="tool-out-box"><b>Total Score: ${total}</b> · ${verdict}<br><span class="tool-note">CPU ${cpuMs.toFixed(1)}ms · GPU ${gpuMs.toFixed(1)}ms</span></div>`;
+      }, 60);
+    };
+  });
+};
+
+/* --- Mic --- */
+window.tool_mic = function(){
+  const html = `<p class="tool-note">Records 3 seconds. Requires mic permission.</p><button class="tool-btn" id="mG">Record 3s</button><div id="mO" class="tool-out"></div>`;
+  openToolModal("Microphone Test", html, async body => {
+    body.querySelector("#mG").onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const rec = new MediaRecorder(stream); const chunks = [];
+        rec.ondataavailable = e => chunks.push(e.data);
+        rec.onstop = () => { const blob = new Blob(chunks, { type: "audio/webm" }); body.querySelector("#mO").innerHTML = `<audio controls src="${URL.createObjectURL(blob)}" style="width:100%;margin-top:10px;"></audio>`; stream.getTracks().forEach(t => t.stop()); };
+        rec.start(); body.querySelector("#mO").innerHTML = `<div class="tool-out-box">Recording…</div>`;
+        setTimeout(() => rec.stop(), 3000);
+      } catch (e) { body.querySelector("#mO").innerHTML = `<div class="tool-out-box tool-warn">${e.message}</div>`; }
+    };
+  });
+};
+
+/* --- Camera --- */
+window.tool_camera = function(){
+  const html = `<p class="tool-note">Opens your camera. Requires camera permission.</p><button class="tool-btn" id="cG">Start Camera</button><video id="cV" autoplay playsinline muted class="tool-video"></video><button class="tool-btn" id="cS" style="display:none;margin-top:10px;">Capture</button><div id="cO" class="tool-out"></div>`;
+  openToolModal("Camera Test", html, async body => {
+    body.querySelector("#cG").onclick = async () => {
+      try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }); body.querySelector("#cV").srcObject = stream; body.querySelector("#cS").style.display = "block"; }
+      catch (e) { body.querySelector("#cO").innerHTML = `<div class="tool-out-box tool-warn">${e.message}</div>`; }
+    };
+    body.querySelector("#cS").onclick = () => {
+      const v = body.querySelector("#cV"); const c = document.createElement("canvas");
+      c.width = v.videoWidth; c.height = v.videoHeight; c.getContext("2d").drawImage(v, 0, 0);
+      body.querySelector("#cO").innerHTML = `<div class="tool-out-box">Captured ${c.width}×${c.height}<br><img src="${c.toDataURL("image/jpeg",0.7)}" style="max-width:100%;border-radius:8px;margin-top:8px;"></div>`;
+    };
+  });
+};
+
+/* --- Screen test --- */
+window.tool_screen = function(){
+  const html = `<p class="tool-note">Tap any color to go fullscreen. Tap screen to exit.</p>
+    <div class="tool-row">
+      <button class="tool-btn" data-c="#ff0000" style="background:#e11;">Red</button>
+      <button class="tool-btn" data-c="#00ff00" style="background:#1a1;">Green</button>
+      <button class="tool-btn" data-c="#0000ff" style="background:#11e;">Blue</button>
+      <button class="tool-btn" data-c="#ffffff" style="background:#fff;color:#000;">White</button>
+      <button class="tool-btn" data-c="#000000" style="background:#000;">Black</button>
+      <button class="tool-btn" data-c="#ff00ff" style="background:#e1e;">Magenta</button>
+    </div>`;
+  openToolModal("Screen Test", html, body => {
+    body.querySelectorAll("[data-c]").forEach(b => b.addEventListener("click", () => {
+      const d = document.createElement("div");
+      d.style.cssText = "position:fixed;inset:0;z-index:999999;cursor:pointer;background:" + b.dataset.c;
+      d.addEventListener("click", () => d.remove());
+      document.body.appendChild(d);
+    }));
+  });
+};
+
+/* --- Vibrate --- */
+window.tool_vibe = function(){
+  const html = `<p class="tool-note">Buzzes your device (if supported).</p>
+    <div class="tool-row">
+      <button class="tool-btn" id="vS">Short</button>
+      <button class="tool-btn" id="vL">Long</button>
+      <button class="tool-btn" id="vP">Pattern</button>
+    </div>
+    <div id="vO" class="tool-out"></div>`;
+  openToolModal("Vibrate", html, body => {
+    const o = body.querySelector("#vO");
+    const doV = p => { if (navigator.vibrate) { navigator.vibrate(p); o.innerHTML = `<div class="tool-out-box tool-ok">Vibrating ✓</div>`; } else o.innerHTML = `<div class="tool-out-box tool-warn">Vibration not supported.</div>`; };
+    body.querySelector("#vS").onclick = () => doV(100);
+    body.querySelector("#vL").onclick = () => doV(800);
+    body.querySelector("#vP").onclick = () => doV([100, 50, 100, 50, 300]);
+  });
+};
+
+/* --- Notification --- */
+window.tool_notif = function(){
+  const html = `<p class="tool-note">Sends a browser notification.</p><button class="tool-btn" id="nG">Send Notification</button><div id="nO" class="tool-out"></div>`;
+  openToolModal("Notification Tester", html, async body => {
+    body.querySelector("#nG").onclick = async () => {
+      if (!("Notification" in window)) { body.querySelector("#nO").innerHTML = `<div class="tool-out-box tool-warn">Not supported.</div>`; return; }
+      const p = await Notification.requestPermission();
+      if (p === "granted") { new Notification("System Update", { body: "This is a test notification." }); body.querySelector("#nO").innerHTML = `<div class="tool-out-box tool-ok">Sent ✓</div>`; }
+      else body.querySelector("#nO").innerHTML = `<div class="tool-out-box tool-warn">Permission denied.</div>`;
+    };
+  });
+};
+
+/* --- Morse --- */
+window.tool_morse = function(){
+  const code = { A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--..","0":"-----","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----." };
+  const rev = Object.fromEntries(Object.entries(code).map(([k,v]) => [v,k]));
+  const html = `<textarea id="moIn" class="tool-input" rows="3" placeholder="Text or morse…"></textarea>
+    <div class="tool-row"><button class="tool-btn" id="moE">Encode</button><button class="tool-btn" id="moD">Decode</button></div>
+    <div id="moO" class="tool-out"></div>`;
+  openToolModal("Morse Code", html, body => {
+    body.querySelector("#moE").onclick = () => {
+      const t = body.querySelector("#moIn").value.toUpperCase();
+      const out = [...t].map(c => c === " " ? "/" : (code[c] || "")).join(" ");
+      body.querySelector("#moO").innerHTML = `<div class="tool-out-box"><code>${out}</code></div>`;
+    };
+    body.querySelector("#moD").onclick = () => {
+      const t = body.querySelector("#moIn").value.trim();
+      const out = t.split(/\s+/).map(c => c === "/" ? " " : (rev[c] || "?")).join("");
+      body.querySelector("#moO").innerHTML = `<div class="tool-out-box"><code>${out}</code></div>`;
+    };
+  });
+};
+
+/* --- Roman --- */
+window.tool_roman = function(){
+  const html = `<input id="roIn" class="tool-input" type="number" placeholder="Number" value="2026"><div class="tool-row"><button class="tool-btn" id="roT">to Roman</button></div><div id="roO" class="tool-out"></div>`;
+  const toRoman = n => { if (n <= 0 || n > 3999) return "out of range"; const map = [[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],[50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]]; let r = ""; for (const [v,s] of map) while (n >= v) { r += s; n -= v; } return r; };
+  openToolModal("Roman Numerals", html, body => {
+    body.querySelector("#roT").onclick = () => {
+      const n = parseInt(body.querySelector("#roIn").value, 10);
+      body.querySelector("#roO").innerHTML = `<div class="tool-out-box"><b>${toRoman(n)}</b></div>`;
+    };
+  });
+};
+
+/* --- Radix --- */
+window.tool_radix = function(){
+  const html = `<input id="rxIn" class="tool-input" placeholder="Enter any number (dec)"><button class="tool-btn" id="rxGo">Convert</button><div id="rxO" class="tool-out"></div>`;
+  openToolModal("Radix Converter", html, body => {
+    body.querySelector("#rxGo").onclick = () => {
+      const n = parseInt(body.querySelector("#rxIn").value, 10);
+      if (isNaN(n)) { body.querySelector("#rxO").innerHTML = `<div class="tool-out-box tool-warn">Not a number.</div>`; return; }
+      body.querySelector("#rxO").innerHTML = `<div class="tool-out-box">Bin: <code>${n.toString(2)}</code><br>Oct: <code>${n.toString(8)}</code><br>Dec: <code>${n}</code><br>Hex: <code>${n.toString(16).toUpperCase()}</code></div>`;
+    };
+  });
+};
+
+/* --- TTS --- */
+window.tool_tts = function(){
+  const html = `<textarea id="tsIn" class="tool-input" rows="3" placeholder="Text to speak…">Hello, this is a test.</textarea><button class="tool-btn" id="tsGo">Speak</button>`;
+  openToolModal("Text to Speech", html, body => {
+    body.querySelector("#tsGo").onclick = () => {
+      const t = body.querySelector("#tsIn").value;
+      if (!window.speechSynthesis) return;
+      const u = new SpeechSynthesisUtterance(t); speechSynthesis.speak(u);
+    };
+  });
+};
+
+/* --- LocalStorage --- */
+window.tool_ls = function(){
+  const rows = [];
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); rows.push([k, localStorage.getItem(k)]); }
+  const html = rows.length
+    ? `<table class="tool-table">${rows.map(([k,v]) => `<tr><td>${k}</td><td><code style="word-break:break-all;">${String(v).slice(0,80)}</code></td></tr>`).join("")}</table><button class="tool-btn" id="lsClr" style="margin-top:12px;">Clear all</button>`
+    : `<div class="tool-out-box tool-warn">Nothing stored by this site.</div>`;
+  openToolModal("LocalStorage", html, body => {
+    const c = body.querySelector("#lsClr"); if (c) c.onclick = () => { localStorage.clear(); body.innerHTML = `<div class="tool-out-box tool-ok">Cleared ✓</div>`; };
+  });
+};
+
+/* --- Fake cipher visualizer --- */
+window.tool_fakeenc = function(){
+  const html = `<textarea id="feIn" class="tool-input" rows="2" placeholder="Type text…">secret message</textarea><button class="tool-btn" id="feGo">Encrypt</button><div id="feO" class="tool-out"></div>`;
+  openToolModal("Cipher Visualizer", html, body => {
+    body.querySelector("#feGo").onclick = () => {
+      const t = body.querySelector("#feIn").value;
+      const el = body.querySelector("#feO");
+      el.innerHTML = `<div class="tool-out-box" style="font-family:monospace;font-size:14px;" id="feT"></div>`;
+      const target = el.querySelector("#feT");
+      const chars = "ABCDEF0123456789!@#$%^&*";
+      let frame = 0; const total = 40;
+      const iv = setInterval(() => {
+        frame++;
+        const out = [...t].map((c, i) => Math.random() < frame/total ? c : chars[Math.floor(Math.random()*chars.length)]).join("");
+        target.textContent = out;
+        if (frame >= total) { clearInterval(iv); target.textContent = t; }
+      }, 60);
+    };
+  });
+};
+
+/* --- Pomodoro --- */
+window.tool_timer2 = function(){
+  const html = `<div style="text-align:center;padding:12px 0;"><div id="pomoD" style="font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:800;">25:00</div></div><div class="tool-row" style="justify-content:center;"><button class="tool-btn" id="pomo25">25 min</button><button class="tool-btn" id="pomo5">5 min</button><button class="tool-btn" id="pomoStop">Stop</button></div>`;
+  openToolModal("Pomodoro", html, body => {
+    const d = body.querySelector("#pomoD"); let iv = null;
+    const start = mins => {
+      let s = mins * 60;
+      if (iv) clearInterval(iv);
+      const upd = () => { d.textContent = Math.floor(s/60) + ":" + String(s%60).padStart(2,"0"); };
+      upd();
+      iv = setInterval(() => { s--; upd(); if (s <= 0) { clearInterval(iv); d.textContent = "Done!"; if (navigator.vibrate) navigator.vibrate([200,100,200]); } }, 1000);
+    };
+    body.querySelector("#pomo25").onclick = () => start(25);
+    body.querySelector("#pomo5").onclick = () => start(5);
+    body.querySelector("#pomoStop").onclick = () => { if (iv) clearInterval(iv); d.textContent = "25:00"; };
+  });
+};
 </script>
 
 </body>
